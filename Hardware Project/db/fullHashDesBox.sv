@@ -17,6 +17,20 @@ localparam h_4 = 4'hD;
 localparam h_5 = 4'hF;
 localparam h_6 = 4'h0;
 localparam h_7 = 4'h3;
+	
+//Wire which contains the result of computation on the message M
+wire [5:0] M_6;
+//Reg used for the main computation
+reg [3:0] H_main;
+//Reg used for the last computation
+reg [3:0] H_last;
+//Reg used to store the value of hash_ready
+reg Hash_Ready;
+//Reg which will contain the final digest
+reg [31:0] digest;
+
+
+assign M_6 = {M[3]^M[2],M[1],M[0],M[7],M[6],M[5]^M[4]};
 
 module S_Box(
    input in [5:0],
