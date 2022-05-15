@@ -5,8 +5,8 @@ module full_hash_des_box(
    input rst_n,
    input message [7:0],
    input counter [63:0],
-   output reg digest [31:0],
-   output reg hash_ready,
+   output digest [31:0],
+   output hash_ready,
 );
 
 localparam h_0 = 4'h4;
