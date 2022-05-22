@@ -43,6 +43,8 @@ module full_hash_des_box(
 	reg [31:0] DIGEST; 		// Final digest output
 	reg [2:0] STAR;			// Status register for the FSM
 
+	wire [3:0] half_hash [7:0];	// Store partial result 
+
 
 	// assign M_6 = {M[3]^M[2],M[1],M[0],M[7],M[6],M[5]^M[4]};
 
@@ -51,19 +53,32 @@ module full_hash_des_box(
 	//   out(S_M_6)
 	//   )
 	
-	always @(m_valid) begin
-		M_6 = {M[3]^M[2],M[1],M[0],M[7],M[6],M[5]^M[4]};
-		C_TMP[0] = {counter[7] ^ counter[1], counter[3], counter[2], counter[5] ^ counter[0], counter[4], counter[6]};
-		C_TMP[1] = {counter[15] ^ counter[9], counter[11], counter[10], counter[13] ^ counter[8], counter[12], counter[14]};
-		C_TMP[2] = {counter[23] ^ counter[17], counter[19], counter[18], counter[21] ^ counter[16], counter[20], counter[22]};
-		C_TMP[3] = {counter[31] ^ counter[25], counter[28], counter[26], counter[29] ^ counter[24], counter[28], counter[30]};
-		C_TMP[4] = {counter[39] ^ counter[33], counter[36], counter[34], counter[37] ^ counter[32], counter[36], counter[38]};
-		C_TMP[5] = {counter[47] ^ counter[41], counter[44], counter[42], counter[45] ^ counter[40], counter[44], counter[46]};
-		C_TMP[6] = {counter[55] ^ counter[49], counter[52], counter[50], counter[53] ^ counter[48], counter[52], counter[54]};
-		C_TMP[7] = {counter[63] ^ counter[57], counter[60], counter[58], counter[61] ^ counter[56], counter[60], counter[62]};
-	end
+	// always @(m_valid) begin
+	// 	M_6 = {M[3]^M[2],M[1],M[0],M[7],M[6],M[5]^M[4]};
+	// 	C_TMP[0] = {counter[7] ^ counter[1], counter[3], counter[2], counter[5] ^ counter[0], counter[4], counter[6]};
+	// 	C_TMP[1] = {counter[15] ^ counter[9], counter[11], counter[10], counter[13] ^ counter[8], counter[12], counter[14]};
+	// 	C_TMP[2] = {counter[23] ^ counter[17], counter[19], counter[18], counter[21] ^ counter[16], counter[20], counter[22]};
+	// 	C_TMP[3] = {counter[31] ^ counter[25], counter[28], counter[26], counter[29] ^ counter[24], counter[28], counter[30]};
+	// 	C_TMP[4] = {counter[39] ^ counter[33], counter[36], counter[34], counter[37] ^ counter[32], counter[36], counter[38]};
+	// 	C_TMP[5] = {counter[47] ^ counter[41], counter[44], counter[42], counter[45] ^ counter[40], counter[44], counter[46]};
+	// 	C_TMP[6] = {counter[55] ^ counter[49], counter[52], counter[50], counter[53] ^ counter[48], counter[52], counter[54]};
+	// 	C_TMP[7] = {counter[63] ^ counter[57], counter[60], counter[58], counter[61] ^ counter[56], counter[60], counter[62]};
+	// end
+
+	H_main_computation main(
+		.m(MSG),
+		.h_main(H_MAIN),
+		.H_MAIN_OUT(half_hash)
+	);
 	
-	// Finite State Machine
+	H_last_computation final_op(
+		.H_main(H_MAIN), 
+		.counter(C_COUNT), 
+		.H_last(DIGEST)
+	);
+
+
+	// Finite State Machine, see documentation
 	always @(posedge clk or negedge rst_n) begin
 		if(!rst_n)
 			STAR <= S0;
@@ -87,7 +102,7 @@ endmodule
 module H_main_computation(
 	input [7:0] m,
 	input h_main [7:0] [3:0],
-	output reg H_MAIN_FINAL [7:0] [3:0]
+	output h_main_out [7:0] [3:0]
 );
 
 	// message byte character compression
@@ -95,45 +110,45 @@ module H_main_computation(
 	Message_To_M_6 M_to_M6(
 		.in(m),
 		.out(m6)
-	);
+		);
 
 	// DES S-Box value computation
 	reg S_VALUE[3:0];
 	S_Box SBox(
 		.in(m6),
 		.out(S_VALUE)
-	);
+		);
 
 	// first round
-	reg H_MAIN_1 [7:0] [3:0];
+	wire h_main_1 [7:0] [3:0];
 	Hash_Round Round_1(
 		.S_box_value(S_VALUE),
 		.h_main(h_main),
-		.h_out(H_MAIN_1)
-	);
+		.h_out(h_main_1)
+		);
 
 	// second round
-	reg H_MAIN_2 [7:0] [3:0];
+	wire h_main_2 [7:0] [3:0];
 	Hash_Round Round_2(
 		.S_box_value(S_VALUE),
-		.h_main(H_MAIN_1),
-		.h_out(H_MAIN_2)
-	);
+		.h_main(h_main_1),
+		.h_out(h_main_2)
+		);
 
 	// third round
-	reg H_MAIN_3 [7:0] [3:0];
+	wire h_main_3 [7:0] [3:0];
 	Hash_Round Round_3(
 		.S_box_value(S_VALUE),
-		.h_main(H_MAIN_2),
-		.h_out(H_MAIN_1)
-	);
+		.h_main(h_main_2),
+		.h_out(h_main_3)
+		);
 
 	// fourth round
 	Hash_Round Round_4(
 		.S_box_value(S_VALUE),
-		.h_main(H_MAIN_3),
-		.h_out(H_MAIN_FINAL)
-	);
+		.h_main(h_main_3),
+		.h_out(h_main_out)
+		);
 
 endmodule
 
@@ -151,29 +166,21 @@ module Hash_Round(
 
 	always(*) begin
 		// 0
-		tmp = h_main[1] ^ SBox_value;
-		h_out[0] = tmp;
+		tmp = h_main[1] ^ SBox_value; h_out[0] = tmp;
 		// 1
-		tmp = h_main[2] ^ SBox_value;
-		h_out[1] = tmp;
+		tmp = h_main[2] ^ SBox_value; h_out[1] = tmp;
 		// 2
-		tmp = h_main[3] ^ SBox_value;
-		h_out[2] = {tmp[2:0], tmp[3]};
+		tmp = h_main[3] ^ SBox_value; h_out[2] = {tmp[2:0], tmp[3]};
 		// 3
-		tmp = h_main[4] ^ SBox_value;
-		h_out[3] = {tmp[2:0], tmp[3]};
+		tmp = h_main[4] ^ SBox_value; h_out[3] = {tmp[2:0], tmp[3]};
 		// 4
-		tmp = h_main[5] ^ SBox_value;
-		h_out[4] = {tmp[1:0], tmp[3:2]};
+		tmp = h_main[5] ^ SBox_value; h_out[4] = {tmp[1:0], tmp[3:2]};
 		// 5
-		tmp = h_main[6] ^ SBox_value;
-		h_out[5] = {tmp[1:0], tmp[3:2]};
+		tmp = h_main[6] ^ SBox_value; h_out[5] = {tmp[1:0], tmp[3:2]};
 		// 6
-		tmp = h_main[7] ^ SBox_value;
-		h_out[6] = {tmp[0], tmp[3:1]};
+		tmp = h_main[7] ^ SBox_value; h_out[6] = {tmp[0], tmp[3:1]};
 		// 7
-		tmp = h_main[0] ^ SBox_value;
-		h_out[7] = {tmp[0], tmp[3:1]};
+		tmp = h_main[0] ^ SBox_value; h_out[7] = {tmp[0], tmp[3:1]};
 	end
 
 endmodule
