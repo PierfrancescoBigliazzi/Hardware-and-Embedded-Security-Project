@@ -80,16 +80,51 @@ module full_hash_des_box(
 
 	// Finite State Machine, see documentation
 	always @(posedge clk or negedge rst_n) begin
-		if(!rst_n)
+		if(!rst_n) begin
+			// initializations
 			STAR <= S0;
-		else
+			H_MAIN <= {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7}; 
+			R_COUNT <= 2'b11; 
+			HASH_READY <= 0;
+		end else
 			case(STAR):
+
+				// to comment
 				S0: begin 
-					MSG <= M_6; C_COUNT <= (C_COUNT != 0) ? C_COUNT : counter; STAR <= (M_valid == b'1) ? S1 : S0; C_6 <= C_TMP; 
-					H_MAIN <= {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7}; R_COUNT <= 2'b11; HASH_READY <= 0;
+					// input sampling
+					MSG <= message; 
+					// input sampling or hold previous value
+					C_COUNT <= (C_COUNT != 0) ? C_COUNT : counter; 
+					// conditional state transfer
+					STAR <= (M_valid == b'1) ? S1 : S0; 
 				end 
+
+				// DALLA MACCHINA A STATI QUI VENGONO CALCOLATI S(M6) E S(C6), è davvero così??? /////////////////////////////////////
 				S1: begin 
-					S_M_6 <= ; S_C_6 <= ;  
+					// in case of a new character elaboration
+					HASH_READY <= 0;
+					R_COUNT <= 2b'11;
+					// unconditional state transfer
+					STAR <= S2;
+				end
+
+				// 4 main algorithm rounds
+				S2: begin 
+					// state transfer
+					STAR <= (R_COUNT != 0) ? S2 : (C_COUNT == 0) ? S3 : S0;
+					C_COUNT <= (R_COUNT == 0) ? C_COUNT - 1 : C_COUNT;
+
+					// SE VOGLIAMO FARE TUTTO IN UN CICLO DI CLOCK FORSE BASTA TOGLIERE QUESTO CONTROLLO,
+					// tanto il modulo H_main computation li calcola già tutti lì dentro
+					R_COUNT <= R_COUNT -1; 
+				end
+
+				// last transformation (digest) signalling and output, and return to S0
+				S3: begin 
+					// unconditional state trasfer
+					STAR <= S0;
+					digest_out <= DIGEST;
+					hash_ready <= b'1;
 				end
 			endcase
 	end
