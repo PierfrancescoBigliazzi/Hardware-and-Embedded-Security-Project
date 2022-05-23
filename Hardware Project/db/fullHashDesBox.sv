@@ -80,38 +80,55 @@ module full_hash_des_box(
 
 	// Finite State Machine, see documentation
 	always @(posedge clk or negedge rst_n) begin
+
 		if(!rst_n) begin
-			// initializations
+
+			// initialization 
 			STAR <= S0;
-			H_MAIN <= {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7}; 
-			R_COUNT <= 2'b11; 
 			HASH_READY <= 0;
+
 		end else
 			case(STAR):
 
-				// to comment
+				// initialization and sampling
 				S0: begin 
+
 					// input sampling
 					MSG <= message; 
+
 					// input sampling or hold previous value
 					C_COUNT <= (C_COUNT != 0) ? C_COUNT : counter; 
+
+					// first case: another character of the same message to compute yet,
+					//			   "transfer" of the computed value
+					// second case: inizialization 
+					H_MAIN <= (C_COUNT != 0) ? half_hash : {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
+
+					// initialization
+					R_COUNT <= 2'b11; 
+
 					// conditional state transfer
 					STAR <= (M_valid == b'1) ? S1 : S0; 
 				end 
 
 				// DALLA MACCHINA A STATI QUI VENGONO CALCOLATI S(M6) E S(C6), è davvero così??? /////////////////////////////////////
 				S1: begin 
+
 					// in case of a new character elaboration
 					HASH_READY <= 0;
 					R_COUNT <= 2b'11;
+
 					// unconditional state transfer
 					STAR <= S2;
 				end
 
 				// 4 main algorithm rounds
 				S2: begin 
+
 					// state transfer
 					STAR <= (R_COUNT != 0) ? S2 : (C_COUNT == 0) ? S3 : S0;
+
+					// count the number of elaborated bytes
 					C_COUNT <= (R_COUNT == 0) ? C_COUNT - 1 : C_COUNT;
 
 					// SE VOGLIAMO FARE TUTTO IN UN CICLO DI CLOCK FORSE BASTA TOGLIERE QUESTO CONTROLLO,
@@ -121,9 +138,14 @@ module full_hash_des_box(
 
 				// last transformation (digest) signalling and output, and return to S0
 				S3: begin 
+
 					// unconditional state trasfer
 					STAR <= S0;
+
+					// set the output
 					digest_out <= DIGEST;
+
+					// signal the output
 					hash_ready <= b'1;
 				end
 			endcase
@@ -148,16 +170,16 @@ module H_main_computation(
 		);
 
 	// DES S-Box value computation
-	reg S_VALUE[3:0];
+	wire s_value[3:0];
 	S_Box SBox(
 		.in(m6),
-		.out(S_VALUE)
+		.out(s_value)
 		);
 
 	// first round
 	wire h_main_1 [7:0] [3:0];
 	Hash_Round Round_1(
-		.S_box_value(S_VALUE),
+		.S_box_value(s_value),
 		.h_main(h_main),
 		.h_out(h_main_1)
 		);
@@ -165,7 +187,7 @@ module H_main_computation(
 	// second round
 	wire h_main_2 [7:0] [3:0];
 	Hash_Round Round_2(
-		.S_box_value(S_VALUE),
+		.S_box_value(s_value),
 		.h_main(h_main_1),
 		.h_out(h_main_2)
 		);
@@ -173,14 +195,14 @@ module H_main_computation(
 	// third round
 	wire h_main_3 [7:0] [3:0];
 	Hash_Round Round_3(
-		.S_box_value(S_VALUE),
+		.S_box_value(s_value),
 		.h_main(h_main_2),
 		.h_out(h_main_3)
 		);
 
 	// fourth round
 	Hash_Round Round_4(
-		.S_box_value(S_VALUE),
+		.S_box_value(s_value),
 		.h_main(h_main_3),
 		.h_out(h_main_out)
 		);
@@ -197,25 +219,40 @@ module Hash_Round(
     output reg h_out [7:0] [3:0] // new hash values
 );
 
-	reg [3:0] tmp;
-
+	reg [3:0] tmp;	
 	always(*) begin
+
 		// 0
-		tmp = h_main[1] ^ SBox_value; h_out[0] = tmp;
+		tmp = h_main[1] ^ SBox_value; 
+		h_out[0] = tmp;
+
 		// 1
-		tmp = h_main[2] ^ SBox_value; h_out[1] = tmp;
+		tmp = h_main[2] ^ SBox_value; 
+		h_out[1] = tmp;
+
 		// 2
-		tmp = h_main[3] ^ SBox_value; h_out[2] = {tmp[2:0], tmp[3]};
+		tmp = h_main[3] ^ SBox_value; 
+		h_out[2] = {tmp[2:0], tmp[3]};
+
 		// 3
-		tmp = h_main[4] ^ SBox_value; h_out[3] = {tmp[2:0], tmp[3]};
+		tmp = h_main[4] ^ SBox_value; 
+		h_out[3] = {tmp[2:0], tmp[3]};
+
 		// 4
-		tmp = h_main[5] ^ SBox_value; h_out[4] = {tmp[1:0], tmp[3:2]};
+		tmp = h_main[5] ^ SBox_value; 
+		h_out[4] = {tmp[1:0], tmp[3:2]};
+
 		// 5
-		tmp = h_main[6] ^ SBox_value; h_out[5] = {tmp[1:0], tmp[3:2]};
+		tmp = h_main[6] ^ SBox_value; 
+		h_out[5] = {tmp[1:0], tmp[3:2]};
+
 		// 6
-		tmp = h_main[7] ^ SBox_value; h_out[6] = {tmp[0], tmp[3:1]};
+		tmp = h_main[7] ^ SBox_value; 
+		h_out[6] = {tmp[0], tmp[3:1]};
+
 		// 7
-		tmp = h_main[0] ^ SBox_value; h_out[7] = {tmp[0], tmp[3:1]};
+		tmp = h_main[0] ^ SBox_value; 
+		h_out[7] = {tmp[0], tmp[3:1]};
 	end
 
 endmodule
@@ -230,8 +267,10 @@ module H_last_computation(
 	output reg H_last [7:0] [3:0]	// Digest
 );
 
-	reg idx [7:0][5:0];
-	reg S_value [7:0][3:0];
+	reg idx [7:0] [5:0];
+	reg S_value [7:0] [3:0];
+	reg [3:0] tmp;
+	reg h_out [7:0] [3:0];
 
 	// 0
 	Counter_to_C_6 C6_0(
@@ -242,6 +281,8 @@ module H_last_computation(
 		.in(idx[0]), 
 		.out(S_value[0])
 		);
+	tmp = H_main[1] ^ S_value[0];
+	h_out[0] = tmp;
 
 	// 1
 	Counter_to_C_6 C6_1(
@@ -252,6 +293,8 @@ module H_last_computation(
 		.in(idx[1]),
 		.out(S_value[1]),
 		);
+	tmp = H_main[2] ^ S_value[1];
+	h_out[1] = tmp;
 
 	// 2
 	Counter_to_C_6 C6_2(
@@ -262,6 +305,8 @@ module H_last_computation(
 		.in(idx[2]),
 		.out(S_value[2]),
 		);
+	tmp = H_main[3] ^ S_value[2];
+	h_out[2] = {tmp[2:0], tmp[3]};
 
 	// 3
 	Counter_to_C_6 C6_3(
@@ -272,6 +317,8 @@ module H_last_computation(
 		.in(idx[3]),
 		.out(S_value[3]),
 		);
+	tmp = H_main[4] ^ S_value[3];
+	h_out[3] = {tmp[2:0], tmp[3]};
 
 	// 4
 	Counter_to_C_6 C6_4(
@@ -282,6 +329,8 @@ module H_last_computation(
 		.in(idx[4]),
 		.out(S_value[4]),
 		);
+	tmp = H_main[5] ^ S_value[4];
+	h_out[4] = {tmp[1:0], tmp[3:2]};
 
 	// 5
 	Counter_to_C_6 C6_5(
@@ -292,6 +341,8 @@ module H_last_computation(
 		.in(idx[5]),
 		.out(S_value[5]),
 		);
+	tmp = H_main[6] ^ S_value[5];
+	h_out[5] = {tmp[1:0], tmp[3:2]};
 
 	// 6
 	Counter_to_C_6 C6_6(
@@ -302,6 +353,8 @@ module H_last_computation(
 		.in(idx[6]),
 		.out(S_value[6]),
 		);
+	tmp = H_main[7] ^ S_value[6];
+	h_out[6] = {tmp[0], tmp[3:1]};
 
 	// 7
 	Counter_to_C_6 C6_7(
@@ -312,7 +365,11 @@ module H_last_computation(
 		.in(idx[7]),
 		.out(S_value[7]),
 		);
+	tmp = H_main[0] ^ S_value[7];
+	h_out[7] = {tmp[0], tmp[3:1]};
 
+	H_last = {h_out[0], h_out[1], h_out[2], h_out[3], h_out[4], h_out[5], h_out[6], h_out[7]};
+	
 endmodule
 
 
