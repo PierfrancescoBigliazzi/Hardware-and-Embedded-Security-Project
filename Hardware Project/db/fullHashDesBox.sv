@@ -104,9 +104,6 @@ module full_hash_des_box(
 					// second case: inizialization 
 					H_MAIN <= (C_COUNT != 0) ? half_hash : {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
 
-					// initialization
-					R_COUNT <= 2'b11; 
-
 					// conditional state transfer
 					STAR <= (M_valid == b'1) ? S1 : S0; 
 				end 
@@ -116,7 +113,6 @@ module full_hash_des_box(
 
 					// in case of a new character elaboration
 					HASH_READY <= 0;
-					R_COUNT <= 2b'11;
 
 					// unconditional state transfer
 					STAR <= S2;
@@ -126,14 +122,11 @@ module full_hash_des_box(
 				S2: begin 
 
 					// state transfer
-					STAR <= (R_COUNT != 0) ? S2 : (C_COUNT == 0) ? S3 : S0;
+					STAR <= (C_COUNT == 0) ? S3 : S0;
 
 					// count the number of elaborated bytes
-					C_COUNT <= (R_COUNT == 0) ? C_COUNT - 1 : C_COUNT;
+					C_COUNT <= C_COUNT - 1;
 
-					// SE VOGLIAMO FARE TUTTO IN UN CICLO DI CLOCK FORSE BASTA TOGLIERE QUESTO CONTROLLO,
-					// tanto il modulo H_main computation li calcola già tutti lì dentro
-					R_COUNT <= R_COUNT -1; 
 				end
 
 				// last transformation (digest) signalling and output, and return to S0
