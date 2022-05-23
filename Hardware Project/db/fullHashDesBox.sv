@@ -2,9 +2,11 @@
 // the "Hardware and Embedded Security" course project of the University of Pisa
 // Students: Venturini Francesco, Bigliazzi Pierfrancesco
 // Professors: Saponara Sergio, Crocetti Luca
+// repo: DA AGGIUNGERE LINK GITHUB .........................................................
 
 
-// Main module
+
+// Main module that implements the FSM and instantiates the submodules
 module full_hash_des_box(
 	input rst_n,
 	input clk,
@@ -15,6 +17,7 @@ module full_hash_des_box(
 	output reg hash_ready
 );
 
+	// nibbles initialization value for the H[i] variables 
 	localparam h_0 = 4'h4;
 	localparam h_1 = 4'hB;
 	localparam h_2 = 4'h7;
@@ -24,46 +27,27 @@ module full_hash_des_box(
 	localparam h_6 = 4'h0;
 	localparam h_7 = 4'h3;
 
-	localparam S0 = 3'b000;
-	localparam S1 = 3'b001;
-	localparam S2 = 3'b010;
-	localparam S3 = 3'b011;
-	localparam S4 = 3'b100;
+	// useful names for the states of the FSM
+	localparam S0 = 3'b00;
+	localparam S1 = 3'b01;
+	localparam S2 = 3'b10;
+	localparam S3 = 3'b11;
 
-	reg [7:0] MSG; 			// Input character
-	reg [63:0] C_COUNT; 	// For the remaining bytes
-	reg [5:0] M_6; 			// For the result of the compression operation on the message M character
-	reg [5:0] C_TMP [7:0];	// Temporary values store
+	reg [7:0] MSG; 			// input character
+	reg [63:0] C_COUNT; 	// remaining bytes
+	reg [5:0] M_6; 			// result of the compression operation on the message character
 	reg [5:0] C_6 [7:0]; 	// For the result of the final operation on the message character
-	reg [3:0] S_M_6; 		// SBox result for M6
-	reg [3:0] S_C_6; 		// SBox result for C6
+	// unused reg [3:0] S_M_6; 		// SBox result for M6
+	// unused reg [3:0] S_C_6; 		// SBox result for C6
 	reg [3:0] H_MAIN [7:0]; // Used for the main computation
 	reg [3:0] H_LAST [7:0]; // Used for the last computation
 	reg HASH_READY; 		// Used to hold hash_ready value
 	reg [31:0] DIGEST; 		// Final digest output
-	reg [2:0] STAR;			// Status register for the FSM
+	reg [1:0] STAR;			// Status register for the FSM
 
-	wire [3:0] half_hash [7:0];	// Store partial result 
+	// Store partial results, between different characters of the same message
+	wire [3:0] half_hash [7:0];	
 
-
-	// assign M_6 = {M[3]^M[2],M[1],M[0],M[7],M[6],M[5]^M[4]};
-
-	//S_Box S_Box_Table(
-	//   in(M_6),
-	//   out(S_M_6)
-	//   )
-	
-	// always @(m_valid) begin
-	// 	M_6 = {M[3]^M[2],M[1],M[0],M[7],M[6],M[5]^M[4]};
-	// 	C_TMP[0] = {counter[7] ^ counter[1], counter[3], counter[2], counter[5] ^ counter[0], counter[4], counter[6]};
-	// 	C_TMP[1] = {counter[15] ^ counter[9], counter[11], counter[10], counter[13] ^ counter[8], counter[12], counter[14]};
-	// 	C_TMP[2] = {counter[23] ^ counter[17], counter[19], counter[18], counter[21] ^ counter[16], counter[20], counter[22]};
-	// 	C_TMP[3] = {counter[31] ^ counter[25], counter[28], counter[26], counter[29] ^ counter[24], counter[28], counter[30]};
-	// 	C_TMP[4] = {counter[39] ^ counter[33], counter[36], counter[34], counter[37] ^ counter[32], counter[36], counter[38]};
-	// 	C_TMP[5] = {counter[47] ^ counter[41], counter[44], counter[42], counter[45] ^ counter[40], counter[44], counter[46]};
-	// 	C_TMP[6] = {counter[55] ^ counter[49], counter[52], counter[50], counter[53] ^ counter[48], counter[52], counter[54]};
-	// 	C_TMP[7] = {counter[63] ^ counter[57], counter[60], counter[58], counter[61] ^ counter[56], counter[60], counter[62]};
-	// end
 
 	H_main_computation main(
 		.m(MSG),
@@ -71,6 +55,7 @@ module full_hash_des_box(
 		.H_MAIN_OUT(half_hash)
 	);
 	
+
 	H_last_computation final_op(
 		.H_main(H_MAIN), 
 		.counter(C_COUNT), 
@@ -368,7 +353,8 @@ endmodule
 
 
 
-/*************************** UTILITY FUNCTIONS ***************************/
+
+/************************************** UTILITY FUNCTIONS **************************************/
 
 
 // Compression function, it transforms an 8-bit character into a 6-bit character
@@ -377,14 +363,12 @@ module Message_To_M_6(input [7:0] in, output [5:0] out);
 endmodule
 
 
-
 //Final operation, it trasnforms one byte of the message length counter into a 6-bit value 
 module Counter_to_C_6( input [7:0] in_c, output reg [5:0] out_c);
 	always(*) begin
 		out_c = {in_c[7] ^ in_c[1], in_c[3], in_c[2], in_c[5] ^ in_c[0], in_c[4], in_c[6]};
 	end
 endmodule
-
 
 
 // This module implements a LUT version of the DES S-box
