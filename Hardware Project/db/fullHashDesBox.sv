@@ -1,9 +1,10 @@
-// This file contains the full_hash_des_sbox SystemVerilog description for
+// This file contains the full_hash_des_sbox front-end RTL description in SystemVerilog for
 // the "Hardware and Embedded Security" course project of the University of Pisa
 // Students: Venturini Francesco, Bigliazzi Pierfrancesco
 // Professors: Saponara Sergio, Crocetti Luca
-// repo: DA AGGIUNGERE LINK GITHUB .........................................................
+// repo: https://github.com/PierfrancescoBigliazzi/Hardware-and-Embedded-Security-Project
 
+// TODO: check on the validity of the input (ASCII range) ???
 
 
 // Main module that implements the FSM and instantiates the submodules
@@ -65,15 +66,17 @@ module full_hash_des_box(
 
 	// Finite State Machine, see documentation
 	always @(posedge clk or negedge rst_n) begin
-
 		if(!rst_n) begin
-
 			// initialization 
 			STAR <= S0;
 			HASH_READY <= 0;
-
 		end else
-			case(STAR):
+			STAR <= NEXT_STATE;
+	end
+
+
+	always @(*) begin 
+		case(STAR):
 
 				// initialization and sampling
 				S0: begin 
@@ -90,7 +93,7 @@ module full_hash_des_box(
 					H_MAIN <= (C_COUNT != 0) ? half_hash : {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
 
 					// conditional state transfer
-					STAR <= (M_valid == b'1) ? S1 : S0; 
+					NEXT_STATE <= (M_valid == b'1) ? S1 : S0; 
 				end 
 
 				// DALLA MACCHINA A STATI QUI VENGONO CALCOLATI S(M6) E S(C6), è davvero così??? /////////////////////////////////////
@@ -100,14 +103,14 @@ module full_hash_des_box(
 					HASH_READY <= 0;
 
 					// unconditional state transfer
-					STAR <= S2;
+					NEXT_STATE <= S2;
 				end
 
 				// 4 main algorithm rounds
 				S2: begin 
 
 					// state transfer
-					STAR <= (C_COUNT == 0) ? S3 : S0;
+					NEXT_STATE <= (C_COUNT == 0) ? S3 : S0;
 
 					// count the number of elaborated bytes
 					C_COUNT <= C_COUNT - 1;
@@ -118,7 +121,7 @@ module full_hash_des_box(
 				S3: begin 
 
 					// unconditional state trasfer
-					STAR <= S0;
+					NEXT_STATE <= S0;
 
 					// set the output
 					digest_out <= DIGEST;
@@ -126,8 +129,12 @@ module full_hash_des_box(
 					// signal the output
 					hash_ready <= b'1;
 				end
+
+				default: NEXT_STATE <= S0;
 			endcase
 	end
+			
+	
 
 endmodule
 
@@ -429,6 +436,8 @@ module S_Box(input [5:0] in, output reg [3:0] out);
 					4'b1100: out = 4'b1100; 4'b1101: out = 4'b0100;
 					4'b1110: out = 4'b0101; 4'b1111: out = 4'b0011;
 				endcase
+
+			default: out = 4'bXXXX;
 		endcase
    	end
 endmodule
