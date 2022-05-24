@@ -1,0 +1,192 @@
+m255
+K4
+z2
+!s11f MIXED_VERSIONS
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/modelsim
+vCounter_to_C_6
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1653408280
+!i10b 1
+!s100 a1P^O3M:k;cn7SPZHK5fK0
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+I8V89I_cn=S]5VNRXY7J9N1
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+Z5 w1653408276
+Z6 8C:\Users\Francesco\Documents\Cybersecurity\Pimo Anno\Secondo Semestre\Hardware and Embedded Security\repo_pier\Hardware-and-Embedded-Security-Project\Hardware Project\db\fullHashDesBox.sv
+Z7 FC:\Users\Francesco\Documents\Cybersecurity\Pimo Anno\Secondo Semestre\Hardware and Embedded Security\repo_pier\Hardware-and-Embedded-Security-Project\Hardware Project\db\fullHashDesBox.sv
+!i122 20
+L0 383 5
+Z8 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z9 !s108 1653408279.000000
+!s107 C:\Users\Francesco\Documents\Cybersecurity\Pimo Anno\Secondo Semestre\Hardware and Embedded Security\repo_pier\Hardware-and-Embedded-Security-Project\Hardware Project\db\fullHashDesBox.sv|
+Z10 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:\Users\Francesco\Documents\Cybersecurity\Pimo Anno\Secondo Semestre\Hardware and Embedded Security\repo_pier\Hardware-and-Embedded-Security-Project\Hardware Project\db\fullHashDesBox.sv|
+!i113 1
+Z11 o-work work -sv
+Z12 tCvgOpt 0
+n@counter_to_@c_6
+vfull_hash_des_box
+R1
+R2
+!i10b 1
+!s100 @oH11KJ7=kXmDU?6G5GJ93
+R3
+I`>mjOXb7mToa_R2@9cekU0
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 20
+L0 11 129
+R8
+r1
+!s85 0
+31
+R9
+Z13 !s107 C:\Users\Francesco\Documents\Cybersecurity\Pimo Anno\Secondo Semestre\Hardware and Embedded Security\repo_pier\Hardware-and-Embedded-Security-Project\Hardware Project\db\fullHashDesBox.sv|
+R10
+!i113 1
+R11
+R12
+vH_last_computation
+R1
+R2
+!i10b 1
+!s100 O62W;z6EE0^`9i4jh94=91
+R3
+IRTfj2gRb?R[LGJ?=D99A13
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 20
+L0 249 119
+R8
+r1
+!s85 0
+31
+R9
+R13
+R10
+!i113 1
+R11
+R12
+n@h_last_computation
+vH_main_computation
+R1
+R2
+!i10b 1
+!s100 >`TgdX1OD@`lQcBa>aS5n2
+R3
+I<=XRSd;C?m0hH49aWO^l90
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 20
+L0 144 52
+R8
+r1
+!s85 0
+31
+R9
+R13
+R10
+!i113 1
+R11
+R12
+n@h_main_computation
+vHash_Round
+R1
+R2
+!i10b 1
+!s100 =n=BUJiXazeha8LA=k^7L1
+R3
+Iff_ho;]LVzcNK4SHmZW;Y0
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 20
+L0 201 43
+R8
+r1
+!s85 0
+31
+R9
+R13
+R10
+!i113 1
+R11
+R12
+n@hash_@round
+vMessage_To_M_6
+R1
+R2
+!i10b 1
+!s100 i]2T@<@4zK551RelO>fO80
+R3
+IdXI=d^8gZ^2aOfR@:Y=5^0
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 20
+L0 377 3
+R8
+r1
+!s85 0
+31
+R9
+R13
+R10
+!i113 1
+R11
+R12
+n@message_@to_@m_6
+vS_Box
+R1
+R2
+!i10b 1
+!s100 [[Q@cIc13N9a<oZnK9[AO1
+R3
+I4Rl]Qa_]]H;c88O6H2];K2
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 20
+L0 393 60
+R8
+r1
+!s85 0
+31
+R9
+R13
+R10
+!i113 1
+R11
+R12
+n@s_@box
