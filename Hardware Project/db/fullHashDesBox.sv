@@ -2,7 +2,7 @@
 // the "Hardware and Embedded Security" course project of the University of Pisa
 // Students: Venturini Francesco, Bigliazzi Pierfrancesco
 // Professors: Saponara Sergio, Crocetti Luca
-// repo: https://github.com/PierfrancescoBigliazzi/Hardware-and-Embedded-Security-Project
+// repo: https://github.com/Portgas97/fpga_full_hash_algorithm_des_sbox
 
 // TODO: check on the validity of the input (ASCII range) ???
 
@@ -37,17 +37,17 @@ module full_hash_des_box(
 	reg [7:0] MSG; 			// input character
 	reg [63:0] C_COUNT; 	// remaining bytes
 	reg [5:0] M_6; 			// result of the compression operation on the message character
-	reg [5:0] C_6 [7:0]; 	// For the result of the final operation on the message character
+	reg [7:0][5:0] C_6; 	// For the result of the final operation on the message character
 	// unused reg [3:0] S_M_6; 		// SBox result for M6
 	// unused reg [3:0] S_C_6; 		// SBox result for C6
-	reg [3:0] H_MAIN [7:0]; // Used for the main computation
-	reg [3:0] H_LAST [7:0]; // Used for the last computation
+	reg [7:0]  [3:0] H_MAIN; // Used for the main computation
+	reg [7:0] [3:0] H_LAST; // Used for the last computation
 	reg HASH_READY; 		// Used to hold hash_ready value
 	reg [31:0] DIGEST; 		// Final digest output
-	reg [1:0] STAR;			// Status register for the FSM
+	reg [1:0] STAR, NEXT_STATE;			// Status register for the FSM
 
 	// Store partial results, between different characters of the same message
-	wire [3:0] half_hash [7:0];	
+	wire [7:0] [3:0] half_hash;	
 
 
 	H_main_computation main(
@@ -76,7 +76,7 @@ module full_hash_des_box(
 
 
 	always @(*) begin 
-		case(STAR):
+		case(STAR)
 
 				// initialization and sampling
 				S0: begin 
@@ -93,7 +93,7 @@ module full_hash_des_box(
 					H_MAIN <= (C_COUNT != 0) ? half_hash : {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
 
 					// conditional state transfer
-					NEXT_STATE <= (M_valid == b'1) ? S1 : S0; 
+					NEXT_STATE <= (M_valid == 1) ? S1 : S0; 
 				end 
 
 				// DALLA MACCHINA A STATI QUI VENGONO CALCOLATI S(M6) E S(C6), è davvero così??? /////////////////////////////////////
@@ -127,7 +127,7 @@ module full_hash_des_box(
 					digest_out <= DIGEST;
 
 					// signal the output
-					hash_ready <= b'1;
+					hash_ready <= 1;
 				end
 
 				default: NEXT_STATE <= S0;
@@ -143,8 +143,8 @@ endmodule
 // Main hash algorithm, 4 rounds
 module H_main_computation(
 	input [7:0] m,
-	input h_main [7:0] [3:0],
-	output h_main_out [7:0] [3:0]
+	input [7:0] [3:0] h_main,
+	output [7:0] [3:0] h_main_out
 );
 
 	// message byte character compression
@@ -155,14 +155,14 @@ module H_main_computation(
 		);
 
 	// DES S-Box value computation
-	wire s_value[3:0];
+	wire [3:0] s_value;
 	S_Box SBox(
 		.in(m6),
 		.out(s_value)
 		);
 
 	// first round
-	wire h_main_1 [7:0] [3:0];
+	wire [7:0] [3:0] h_main_1;
 	Hash_Round Round_1(
 		.S_box_value(s_value),
 		.h_main(h_main),
@@ -170,7 +170,7 @@ module H_main_computation(
 		);
 
 	// second round
-	wire h_main_2 [7:0] [3:0];
+	wire [7:0] [3:0] h_main_2;
 	Hash_Round Round_2(
 		.S_box_value(s_value),
 		.h_main(h_main_1),
@@ -178,7 +178,7 @@ module H_main_computation(
 		);
 
 	// third round
-	wire h_main_3 [7:0] [3:0];
+	wire [7:0] [3:0] h_main_3;
 	Hash_Round Round_3(
 		.S_box_value(s_value),
 		.h_main(h_main_2),
@@ -200,12 +200,12 @@ endmodule
 // According to: H[i] = (H[(i+1) mod 8] ^ S(M6)) << |_ i/2 _|
 module Hash_Round(
 	input [3:0] SBox_value, // output of the DES S-Box LUT table
-	input h_main [7:0] [3:0], // previous hash values
-    output reg h_out [7:0] [3:0] // new hash values
+	input [7:0] [3:0] h_main, // previous hash values
+    output reg [7:0] [3:0] h_out // new hash values
 );
 
 	reg [3:0] tmp;	
-	always(*) begin
+	always @(*) begin
 
 		// 0
 		tmp = h_main[1] ^ SBox_value; 
@@ -247,15 +247,15 @@ endmodule
 // It performs the last operation of the algorithm
 // According to: H[i] = (H[(i+1) mod 8] ^ S(C6[i])) << |_ i/2 _|
 module H_last_computation(
-	input H_main [7:0] [3:0], 		// Results from the main 4 rounds
+	input [7:0] [3:0] H_main, 		// Results from the main 4 rounds
 	input [63:0] counter, 			// Message length counter
-	output reg H_last [7:0] [3:0]	// Digest
+	output reg [7:0] [3:0] H_last	// Digest
 );
 
-	reg idx [7:0] [5:0];
-	reg S_value [7:0] [3:0];
-	reg [3:0] tmp;
-	reg h_out [7:0] [3:0];
+	reg [7:0] [5:0] idx;
+	reg [7:0] [3:0] S_value;
+	reg [7:0] [3:0] tmp;
+	reg [7:0] [3:0] h_out;
 
 	// 0
 	Counter_to_C_6 C6_0(
@@ -266,9 +266,7 @@ module H_last_computation(
 		.in(idx[0]), 
 		.out(S_value[0])
 		);
-	tmp = H_main[1] ^ S_value[0];
-	h_out[0] = tmp;
-
+	
 	// 1
 	Counter_to_C_6 C6_1(
 		.in_c(counter[55:48]),
@@ -276,10 +274,9 @@ module H_last_computation(
 		);
 	S_Box Sbox1(
 		.in(idx[1]),
-		.out(S_value[1]),
+		.out(S_value[1])
 		);
-	tmp = H_main[2] ^ S_value[1];
-	h_out[1] = tmp;
+	
 
 	// 2
 	Counter_to_C_6 C6_2(
@@ -288,10 +285,9 @@ module H_last_computation(
 		);
 	S_Box Sbox2(
 		.in(idx[2]),
-		.out(S_value[2]),
+		.out(S_value[2])
 		);
-	tmp = H_main[3] ^ S_value[2];
-	h_out[2] = {tmp[2:0], tmp[3]};
+	
 
 	// 3
 	Counter_to_C_6 C6_3(
@@ -300,10 +296,9 @@ module H_last_computation(
 		);
 	S_Box Sbox3(
 		.in(idx[3]),
-		.out(S_value[3]),
+		.out(S_value[3])
 		);
-	tmp = H_main[4] ^ S_value[3];
-	h_out[3] = {tmp[2:0], tmp[3]};
+	
 
 	// 4
 	Counter_to_C_6 C6_4(
@@ -312,10 +307,9 @@ module H_last_computation(
 		);
 	S_Box Sbox4(
 		.in(idx[4]),
-		.out(S_value[4]),
+		.out(S_value[4])
 		);
-	tmp = H_main[5] ^ S_value[4];
-	h_out[4] = {tmp[1:0], tmp[3:2]};
+	
 
 	// 5
 	Counter_to_C_6 C6_5(
@@ -324,10 +318,9 @@ module H_last_computation(
 		);
 	S_Box Sbox5(
 		.in(idx[5]),
-		.out(S_value[5]),
+		.out(S_value[5])
 		);
-	tmp = H_main[6] ^ S_value[5];
-	h_out[5] = {tmp[1:0], tmp[3:2]};
+	
 
 	// 6
 	Counter_to_C_6 C6_6(
@@ -336,10 +329,9 @@ module H_last_computation(
 		);
 	S_Box Sbox6(
 		.in(idx[6]),
-		.out(S_value[6]),
+		.out(S_value[6])
 		);
-	tmp = H_main[7] ^ S_value[6];
-	h_out[6] = {tmp[0], tmp[3:1]};
+	
 
 	// 7
 	Counter_to_C_6 C6_7(
@@ -348,12 +340,29 @@ module H_last_computation(
 		);
 	S_Box Sbox7(
 		.in(idx[7]),
-		.out(S_value[7]),
+		.out(S_value[7])
 		);
-	tmp = H_main[0] ^ S_value[7];
-	h_out[7] = {tmp[0], tmp[3:1]};
+	
 
-	H_last = {h_out[0], h_out[1], h_out[2], h_out[3], h_out[4], h_out[5], h_out[6], h_out[7]};
+	always @(*) begin
+		tmp[1] = H_main[2] ^ S_value[1];
+		h_out[1] = tmp[1];
+		tmp[2] = H_main[3] ^ S_value[2];
+		h_out[2] = {tmp[2][2:0], tmp[2][3]};
+		tmp[3] = H_main[4] ^ S_value[3];
+		h_out[3] = {tmp[3][2:0], tmp[3][3]};
+		tmp[4] = H_main[5] ^ S_value[4];
+		h_out[4] = {tmp[4][1:0], tmp[4][3:2]};
+		tmp[5] = H_main[6] ^ S_value[5];
+		h_out[5] = {tmp[5][1:0], tmp[5][3:2]};
+		tmp[6] = H_main[7] ^ S_value[6];
+		h_out[6] = {tmp[6][0], tmp[6][3:1]};
+		tmp[7] = H_main[0] ^ S_value[7];
+		h_out[7] = {tmp[7][0], tmp[7][3:1]};
+		
+		H_last = {h_out[0], h_out[1], h_out[2], h_out[3], h_out[4], h_out[5], h_out[6], h_out[7]};
+	end
+
 	
 endmodule
 
@@ -372,7 +381,7 @@ endmodule
 
 //Final operation, it trasnforms one byte of the message length counter into a 6-bit value 
 module Counter_to_C_6( input [7:0] in_c, output reg [5:0] out_c);
-	always(*) begin
+	always @(*) begin
 		out_c = {in_c[7] ^ in_c[1], in_c[3], in_c[2], in_c[5] ^ in_c[0], in_c[4], in_c[6]};
 	end
 endmodule
