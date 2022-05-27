@@ -36,14 +36,11 @@ module full_hash_des_box(
 
 	reg [7:0] MSG; 			// input character
 	reg [63:0] C_COUNT; 	// remaining bytes
+	reg [63:0] COUNTER;
 	reg [5:0] M_6; 			// result of the compression operation on the message character
 	reg [7:0][5:0] C_6; 	// For the result of the final operation on the message character
-	// unused reg [3:0] S_M_6; 		// SBox result for M6
-	// unused reg [3:0] S_C_6; 		// SBox result for C6
 	reg [7:0]  [3:0] H_MAIN; // Used for the main computation
 	reg [7:0] [3:0] H_LAST; // Used for the last computation
-	reg HASH_READY; 		// Used to hold hash_ready value
-	reg [31:0] DIGEST; 		// Final digest output
 	reg [1:0] STAR, NEXT_STATE;			// Status register for the FSM
 
 	// Store partial results, between different characters of the same message
@@ -53,14 +50,14 @@ module full_hash_des_box(
 	H_main_computation main(
 		.m(MSG),
 		.h_main(H_MAIN),
-		.H_MAIN_OUT(half_hash)
+		.h_main_out(half_hash)
 	);
 	
 
 	H_last_computation final_op(
 		.H_main(H_MAIN), 
 		.counter(C_COUNT), 
-		.H_last(DIGEST)
+		.H_last(H_LAST)
 	);
 
 
@@ -69,7 +66,8 @@ module full_hash_des_box(
 		if(!rst_n) begin
 			// initialization 
 			STAR <= S0;
-			HASH_READY <= 0;
+			hash_ready <= 0;
+			C_COUNT <= 0;
 		end else
 			STAR <= NEXT_STATE;
 	end
@@ -85,7 +83,10 @@ module full_hash_des_box(
 					MSG <= message; 
 
 					// input sampling or hold previous value
-					C_COUNT <= (C_COUNT != 0) ? C_COUNT : counter; 
+					C_COUNT <= (C_COUNT != 0) ? C_COUNT : counter;
+					
+					// sampling the real length of the message
+					COUNTER <= counter;
 
 					// first case: another character of the same message to compute yet,
 					//			   "transfer" of the computed value
@@ -96,38 +97,34 @@ module full_hash_des_box(
 					NEXT_STATE <= (M_valid == 1) ? S1 : S0; 
 				end 
 
-				// DALLA MACCHINA A STATI QUI VENGONO CALCOLATI S(M6) E S(C6), è davvero così??? /////////////////////////////////////
 				S1: begin 
 
 					// in case of a new character elaboration
-					HASH_READY <= 0;
-
-					// unconditional state transfer
-					NEXT_STATE <= S2;
-				end
-
-				// 4 main algorithm rounds
-				S2: begin 
-
-					// state transfer
-					NEXT_STATE <= (C_COUNT == 0) ? S3 : S0;
+					hash_ready <= 0;
+					
+					// result of the elaboration of the 4 rounds
+					H_MAIN <= half_hash;
 
 					// count the number of elaborated bytes
 					C_COUNT <= C_COUNT - 1;
+					
+					// state transfer
+					NEXT_STATE <= (C_COUNT == 0) ? S2 : S0;
 
 				end
 
+
 				// last transformation (digest) signalling and output, and return to S0
-				S3: begin 
-
-					// unconditional state trasfer
-					NEXT_STATE <= S0;
-
-					// set the output
-					digest_out <= DIGEST;
+				S2: begin
+					
+					// digest assigned with the final result of the last computation
+					digest_out <= H_LAST;
 
 					// signal the output
 					hash_ready <= 1;
+					
+					// unconditional state trasfer
+					NEXT_STATE <= S0;
 				end
 
 				default: NEXT_STATE <= S0;
@@ -164,7 +161,7 @@ module H_main_computation(
 	// first round
 	wire [7:0] [3:0] h_main_1;
 	Hash_Round Round_1(
-		.S_box_value(s_value),
+		.S_Box_value(s_value),
 		.h_main(h_main),
 		.h_out(h_main_1)
 		);
@@ -172,7 +169,7 @@ module H_main_computation(
 	// second round
 	wire [7:0] [3:0] h_main_2;
 	Hash_Round Round_2(
-		.S_box_value(s_value),
+		.S_Box_value(s_value),
 		.h_main(h_main_1),
 		.h_out(h_main_2)
 		);
@@ -180,14 +177,14 @@ module H_main_computation(
 	// third round
 	wire [7:0] [3:0] h_main_3;
 	Hash_Round Round_3(
-		.S_box_value(s_value),
+		.S_Box_value(s_value),
 		.h_main(h_main_2),
 		.h_out(h_main_3)
 		);
 
 	// fourth round
 	Hash_Round Round_4(
-		.S_box_value(s_value),
+		.S_Box_value(s_value),
 		.h_main(h_main_3),
 		.h_out(h_main_out)
 		);
@@ -199,7 +196,7 @@ endmodule
 // It performs one round of the main hash algorithm
 // According to: H[i] = (H[(i+1) mod 8] ^ S(M6)) << |_ i/2 _|
 module Hash_Round(
-	input [3:0] SBox_value, // output of the DES S-Box LUT table
+	input [3:0] S_Box_value, // output of the DES S-Box LUT table
 	input [7:0] [3:0] h_main, // previous hash values
     output reg [7:0] [3:0] h_out // new hash values
 );
@@ -208,35 +205,35 @@ module Hash_Round(
 	always @(*) begin
 
 		// 0
-		tmp = h_main[1] ^ SBox_value; 
+		tmp = h_main[1] ^ S_Box_value; 
 		h_out[0] = tmp;
 
 		// 1
-		tmp = h_main[2] ^ SBox_value; 
+		tmp = h_main[2] ^ S_Box_value; 
 		h_out[1] = tmp;
 
 		// 2
-		tmp = h_main[3] ^ SBox_value; 
+		tmp = h_main[3] ^ S_Box_value; 
 		h_out[2] = {tmp[2:0], tmp[3]};
 
 		// 3
-		tmp = h_main[4] ^ SBox_value; 
+		tmp = h_main[4] ^ S_Box_value; 
 		h_out[3] = {tmp[2:0], tmp[3]};
 
 		// 4
-		tmp = h_main[5] ^ SBox_value; 
+		tmp = h_main[5] ^ S_Box_value; 
 		h_out[4] = {tmp[1:0], tmp[3:2]};
 
 		// 5
-		tmp = h_main[6] ^ SBox_value; 
+		tmp = h_main[6] ^ S_Box_value; 
 		h_out[5] = {tmp[1:0], tmp[3:2]};
 
 		// 6
-		tmp = h_main[7] ^ SBox_value; 
+		tmp = h_main[7] ^ S_Box_value; 
 		h_out[6] = {tmp[0], tmp[3:1]};
 
 		// 7
-		tmp = h_main[0] ^ SBox_value; 
+		tmp = h_main[0] ^ S_Box_value; 
 		h_out[7] = {tmp[0], tmp[3:1]};
 	end
 
