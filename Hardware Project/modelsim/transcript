@@ -1,22 +1,463 @@
-# Compile of fullHashDesBox.sv failed with 9 errors.
-# Compile of fullHashDesBox.sv failed with 15 errors.
-# Compile of fullHashDesBox.sv failed with 5 errors.
-# Compile of fullHashDesBox.sv failed with 4 errors.
-# Compile of fullHashDesBox.sv failed with 26 errors.
-# Compile of fullHashDesBox.sv failed with 10 errors.
-# Compile of fullHashDesBox.sv failed with 2 errors.
-# Compile of fullHashDesBox.sv failed with 19 errors.
-# Compile of fullHashDesBox.sv failed with 2 errors.
-# Compile of fullHashDesBox.sv failed with 2 errors.
-# Compile of fullHashDesBox.sv failed with 9 errors.
-# Compile of fullHashDesBox.sv failed with 2 errors.
-# Compile of fullHashDesBox.sv failed with 8 errors.
-# Compile of fullHashDesBox.sv failed with 8 errors.
-# Compile of fullHashDesBox.sv failed with 8 errors.
-# Compile of fullHashDesBox.sv failed with 8 errors.
-# Compile of fullHashDesBox.sv failed with 8 errors.
-# Compile of fullHashDesBox.sv failed with 2 errors.
-# Compile of fullHashDesBox.sv failed with 17 errors.
-# Compile of fullHashDesBox.sv failed with 4 errors.
-# Compile of fullHashDesBox.sv failed with 1 errors.
 # Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 17:18:53 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+run -all
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+# Break key hit
+run -all
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 17:34:33 on May 28,2022, Elapsed time: 0:15:40
+# Errors: 0, Warnings: 4
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 17:34:34 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv failed with 1 errors.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 1 failed with 1 error.
+run -all
+vsim -gui work.full_hash_des_box_testbench
+# End time: 17:37:37 on May 28,2022, Elapsed time: 0:03:03
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 17:37:37 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv failed with 1 errors.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 1 failed with 1 error.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 17:39:28 on May 28,2022, Elapsed time: 0:01:51
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 17:39:28 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+# Load canceled
+run -all
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 17:44:23 on May 28,2022, Elapsed time: 0:04:55
+# Errors: 0, Warnings: 3
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 17:44:23 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 17:55:06 on May 28,2022, Elapsed time: 0:10:43
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 17:55:07 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 18:00:06 on May 28,2022, Elapsed time: 0:04:59
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 18:00:07 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 18:08:42 on May 28,2022, Elapsed time: 0:08:35
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 18:08:43 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+# Break key hit
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 18:10:38 on May 28,2022, Elapsed time: 0:01:55
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 18:10:38 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv failed with 3 errors.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 1 failed with 3 errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 18:29:03 on May 28,2022, Elapsed time: 0:18:25
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 18:29:03 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv failed with 1 errors.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 1 failed with 1 error.
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 18:31:03 on May 28,2022, Elapsed time: 0:02:00
+# Errors: 0, Warnings: 3
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 18:31:03 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(69)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 69
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v failed with 2 errors.
+# 2 compiles, 1 failed with 2 errors.
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 18:34:32 on May 28,2022, Elapsed time: 0:03:29
+# Errors: 0, Warnings: 3
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 18:34:33 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# HERE
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(71)
+#    Time: 130 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 71
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 18:49:24 on May 28,2022, Elapsed time: 0:14:51
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 18:49:25 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(82)
+#    Time: 350 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 82
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 18:56:17 on May 28,2022, Elapsed time: 0:06:52
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 18:56:17 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(82)
+#    Time: 350 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 82
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 19:00:25 on May 28,2022, Elapsed time: 0:04:08
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 19:00:26 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(82)
+#    Time: 350 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 82
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 19:03:34 on May 28,2022, Elapsed time: 0:03:08
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 19:03:34 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(82)
+#    Time: 350 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 82
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 19:14:08 on May 28,2022, Elapsed time: 0:10:34
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 19:14:08 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# 0
+# Digest A character : xxxxxxxx
+# Test result [    Baa`dpd ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(86)
+#    Time: 350 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 86
+# Compile of fullHashDesBox.sv was successful.
+# Compile of full_hash_des_box_tb.v was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -gui work.full_hash_des_box_testbench
+# End time: 19:20:12 on May 28,2022, Elapsed time: 0:06:04
+# Errors: 0, Warnings: 2
+# vsim -gui work.full_hash_des_box_testbench 
+# Start time: 19:20:13 on May 28,2022
+# Loading work.full_hash_des_box_testbench
+# Loading sv_std.std
+# Loading work.full_hash_des_box
+# Loading work.H_main_computation
+# Loading work.Message_To_M_6
+# Loading work.S_Box
+# Loading work.Hash_Round
+# Loading work.H_last_computation
+# Loading work.Counter_to_C_6
+add wave -position insertpoint sim:/full_hash_des_box_testbench/HASH_DUT/*
+run -all
+# TEST_CHAR_A
+# 1
+# Digest A character : a332780c
+# Test result [    Failure ] 
+# Test finished
+# ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(86)
+#    Time: 350 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
+# Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 86
+# End time: 19:36:18 on May 28,2022, Elapsed time: 0:16:05
+# Errors: 0, Warnings: 1

@@ -39,6 +39,8 @@ module full_hash_des_box_testbench();
 	
 		
 		@(reset_deassertion);
+		DUT_M_valid = 0;
+
 		
 		
 		@(posedge clk);
@@ -52,16 +54,31 @@ module full_hash_des_box_testbench();
 				DUT_message = "A";
 				DUT_counter = 1;
 				DUT_M_valid = 1;
+				
 				@ (posedge clk);
 				DUT_M_valid = 0;
+				DUT_message = "B";
+				DUT_counter = 0;
+				
 				@ (posedge clk);
 				@ (posedge clk);
 				@ (posedge clk);
-				$display("HERE");
 				$display(DUT_hash_ready);
 				$display("Digest A character : %h", DUT_digest_out);
 				$display("Test result [ %s ] ", expected_digest_A == DUT_digest_out ? "Successful" : "Failure" );
 				$display("Test finished");
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+				@ (posedge clk);
+
 			end: TEST_UPPERCASE_A
 			
 		join

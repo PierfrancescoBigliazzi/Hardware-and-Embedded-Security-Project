@@ -29,10 +29,10 @@ module full_hash_des_box(
 	localparam h_7 = 4'h3;
 
 	// useful names for the states of the FSM
-	localparam S0 = 3'b00;
-	localparam S1 = 3'b01;
-	localparam S2 = 3'b10;
-	localparam S3 = 3'b11;
+	localparam S0 = 2'b00;
+	localparam S1 = 2'b01;
+	localparam S2 = 2'b10;
+	localparam S3 = 2'b11;
 
 	reg [7:0] MSG; 			// input character
 	reg [63:0] C_COUNT; 	// remaining bytes
@@ -41,11 +41,12 @@ module full_hash_des_box(
 	reg [7:0][5:0] C_6; 	// For the result of the final operation on the message character
 	reg [7:0]  [3:0] H_MAIN; // Used for the main computation
 	reg [7:0] [3:0] H_LAST; // Used for the last computation
-	reg [1:0] STAR, NEXT_STATE;			// Status register for the FSM
+	reg [1:0] STAR;			// Status register for the FSM
+	reg flag;
+	reg MV;
 
 	// Store partial results, between different characters of the same message
 	wire [7:0] [3:0] half_hash;	
-
 
 	H_main_computation main(
 		.m(MSG),
@@ -67,71 +68,70 @@ module full_hash_des_box(
 			// initialization 
 			STAR <= S0;
 			hash_ready <= 0;
-			C_COUNT <= 0;
-		end else
-			STAR <= NEXT_STATE;
+			flag <= 0;
+			MV <= 0;
+		end else begin
+			case(STAR)
+
+					S0: begin
+
+						// state transfer if inputs are valid
+						STAR <= (M_valid == 1) ? S1 : S0;
+
+						// input sampling
+						MSG <= message; 
+
+						// input sampling or hold previous value
+						C_COUNT <= (flag == 1) ? C_COUNT : counter;
+						
+						// sampling the real length of the message
+						COUNTER <= counter;
+
+						H_MAIN <= (flag == 1) ? half_hash : {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
+
+					end
+
+					S1: begin 
+
+						// in case of a new character elaboration
+						hash_ready <= 0;
+						
+						// result of the elaboration of the 4 rounds
+						H_MAIN <= half_hash;
+
+						// count the number of elaborated bytes
+						C_COUNT <= C_COUNT - 1;
+						
+						// state transfer
+						STAR <= (C_COUNT == 1) ? S2 : S0;
+
+						// 
+						flag <= 1;
+
+					end
+
+					// last transformation (digest) signalling and output, and return to S0
+					S2: begin
+						
+						// digest assigned with the final result of the last computation
+						digest_out <= H_LAST;
+
+						// signal the output
+						hash_ready <= 1;
+						
+						// unconditional state trasfer
+						STAR <= S0;
+
+						//
+						flag <= 0;
+					end
+
+					default: STAR <= S0;
+				endcase
+
+		end
+
 	end
-
-
-	always @(*) begin 
-		case(STAR)
-
-				// initialization and sampling
-				S0: begin 
-
-					// input sampling
-					MSG <= message; 
-
-					// input sampling or hold previous value
-					C_COUNT <= (C_COUNT != 0) ? C_COUNT : counter;
-					
-					// sampling the real length of the message
-					COUNTER <= counter;
-
-					// first case: another character of the same message to compute yet,
-					//			   "transfer" of the computed value
-					// second case: inizialization 
-					H_MAIN <= (C_COUNT != 0) ? half_hash : {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
-
-					// conditional state transfer
-					NEXT_STATE <= (M_valid == 1) ? S1 : S0; 
-				end 
-
-				S1: begin 
-
-					// in case of a new character elaboration
-					hash_ready <= 0;
-					
-					// result of the elaboration of the 4 rounds
-					H_MAIN <= half_hash;
-
-					// count the number of elaborated bytes
-					C_COUNT <= C_COUNT - 1;
-					
-					// state transfer
-					NEXT_STATE <= (C_COUNT == 0) ? S2 : S0;
-
-				end
-
-
-				// last transformation (digest) signalling and output, and return to S0
-				S2: begin
-					
-					// digest assigned with the final result of the last computation
-					digest_out <= H_LAST;
-
-					// signal the output
-					hash_ready <= 1;
-					
-					// unconditional state trasfer
-					NEXT_STATE <= S0;
-				end
-
-				default: NEXT_STATE <= S0;
-			endcase
-	end
-			
-	
 
 endmodule
 
@@ -342,6 +342,8 @@ module H_last_computation(
 	
 
 	always @(*) begin
+		tmp[0] = H_main[1] ^ S_value[0];
+		h_out[0] = tmp[0];
 		tmp[1] = H_main[2] ^ S_value[1];
 		h_out[1] = tmp[1];
 		tmp[2] = H_main[3] ^ S_value[2];
