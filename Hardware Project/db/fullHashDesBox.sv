@@ -6,6 +6,365 @@
 
 // TODO: check on the validity of the input (ASCII range) ???
 
+
+// Main module that implements the FSM and instantiates the submodules
+module full_hash_des_box(
+	input rst_n,
+	input clk,
+	input M_valid,
+	input [7:0] message,
+	input [63:0] counter,
+	output reg [31:0] digest_out,
+	output reg hash_ready
+);
+
+	// nibbles initialization value for the H[i] variables 
+	localparam h_0 = 4'h4;
+	localparam h_1 = 4'hB;
+	localparam h_2 = 4'h7;
+	localparam h_3 = 4'h1;
+	localparam h_4 = 4'hD;
+	localparam h_5 = 4'hF;
+	localparam h_6 = 4'h0;
+	localparam h_7 = 4'h3;
+
+	// useful names for the states of the FSM
+	localparam S0 = 2'b00;
+	localparam S1 = 2'b01;
+	localparam S2 = 2'b10;
+	// localparam S3 = 2'b11; // not used
+
+	reg [7:0] MSG; 			 // input character
+	reg [63:0] C_COUNT; 	 // remaining bytes
+	reg [63:0] COUNTER;		 // real byte length
+	reg [5:0] M_6; 			 // result of the compression operation on the message character
+	reg [7:0][5:0] C_6; 	 // For the result of the final operation on the message character
+	reg [7:0]  [3:0] H_MAIN; // Used for the main computation
+	reg [7:0] [3:0] H_LAST;  // Used for the last computation
+	reg [1:0] STAR;			 // Status register for the FSM
+	reg flag;				 // to discriminate the initialization
+
+	// Store partial results, between different characters of the same message
+	wire [7:0] [3:0] half_hash;	
+
+	H_main_computation main(
+		.m(MSG),
+		.h_main(H_MAIN),
+		.h_main_out(half_hash)
+	);
+	
+
+	H_last_computation final_op(
+		.H_main(H_MAIN), 
+		.counter(COUNTER), 
+		.H_last(H_LAST)
+	);
+
+
+	// Finite State Machine, see documentation
+	always @(posedge clk or negedge rst_n) begin
+
+		if(!rst_n) begin
+
+			// initialization 
+			STAR <= S0;
+			hash_ready <= 0;
+			flag <= 0;
+
+		end else begin
+
+			case(STAR)
+
+				// input sampling
+				S0: begin
+
+					// state transfer if inputs are valid
+					STAR <= (M_valid == 1) ? ((counter > 0) ? S1: S2) : S0;
+
+					// input sampling
+					MSG <= message; 
+
+					// input sampling or hold previous value
+					C_COUNT <= (flag == 1) ? C_COUNT : counter;
+					
+					// sampling the real length of the message
+					COUNTER <= counter;
+
+					// update the main register with the computed value, or initialize it
+					H_MAIN <= (flag == 1) ? half_hash : {h_0, h_1, h_2, h_3, h_4, h_5, h_6, h_7};
+				end
+
+				// main computation
+				S1: begin 
+
+					// in case of a new character elaboration
+					hash_ready <= 0;
+					
+					// result of the elaboration of the 4 rounds
+					H_MAIN <= half_hash;
+
+					// count the number of elaborated bytes
+					C_COUNT <= C_COUNT - 1;
+					
+					// state transfer
+					STAR <= (C_COUNT == 1) ? S2 : S0;
+
+					// remember that the message computation is started
+					flag <= 1;
+				end
+
+				// last transformation signalling and digest output, return to S0
+				S2: begin
+					
+					// digest assigned with the final result of the last computation
+					digest_out <= H_LAST;
+
+					// signal the output
+					hash_ready <= 1;
+					
+					// unconditional state trasfer
+					STAR <= S0;
+
+					// the elaboration has finished
+					flag <= 0;
+				end
+
+				// avoid inferred latch
+				default: STAR <= S0;
+			endcase
+		end
+	end
+endmodule
+
+
+
+// Main hash algorithm, 4 rounds
+module H_main_computation(
+	input [7:0] m,
+	input [7:0] [3:0] h_main,
+	output [7:0] [3:0] h_main_out
+);
+
+	// message byte character compression
+	wire [5:0] m6;
+	Message_To_M_6 M_to_M6(
+		.in(m),
+		.out(m6)
+		);
+
+	// DES S-Box value computation
+	wire [3:0] s_value;
+	S_Box SBox(
+		.in(m6),
+		.out(s_value)
+		);
+
+	// first round
+	wire [7:0] [3:0] h_main_1;
+	Hash_Round Round_1(
+		.S_Box_value(s_value),
+		.h_main(h_main),
+		.h_out(h_main_1)
+		);
+
+	// second round
+	wire [7:0] [3:0] h_main_2;
+	Hash_Round Round_2(
+		.S_Box_value(s_value),
+		.h_main(h_main_1),
+		.h_out(h_main_2)
+		);
+
+	// third round
+	wire [7:0] [3:0] h_main_3;
+	Hash_Round Round_3(
+		.S_Box_value(s_value),
+		.h_main(h_main_2),
+		.h_out(h_main_3)
+		);
+
+	// fourth round
+	Hash_Round Round_4(
+		.S_Box_value(s_value),
+		.h_main(h_main_3),
+		.h_out(h_main_out)
+		);
+
+endmodule
+
+
+
+// It performs one round of the main hash algorithm
+// According to: H[i] = (H[(i+1) mod 8] ^ S(M6)) << |_ i/2 _|
+module Hash_Round(
+	input [3:0] S_Box_value, // output of the DES S-Box LUT table
+	input [7:0] [3:0] h_main, // previous hash values
+    output reg [7:0] [3:0] h_out // new hash values
+);
+
+	reg [3:0] tmp;	
+	always @(*) begin
+
+		// 0
+		tmp = h_main[1] ^ S_Box_value; 
+		h_out[0] = tmp;
+
+		// 1
+		tmp = h_main[2] ^ S_Box_value; 
+		h_out[1] = tmp;
+
+		// 2
+		tmp = h_main[3] ^ S_Box_value; 
+		h_out[2] = {tmp[2:0], tmp[3]};
+
+		// 3
+		tmp = h_main[4] ^ S_Box_value; 
+		h_out[3] = {tmp[2:0], tmp[3]};
+
+		// 4
+		tmp = h_main[5] ^ S_Box_value; 
+		h_out[4] = {tmp[1:0], tmp[3:2]};
+
+		// 5
+		tmp = h_main[6] ^ S_Box_value; 
+		h_out[5] = {tmp[1:0], tmp[3:2]};
+
+		// 6
+		tmp = h_main[7] ^ S_Box_value; 
+		h_out[6] = {tmp[0], tmp[3:1]};
+
+		// 7
+		tmp = h_main[0] ^ S_Box_value; 
+		h_out[7] = {tmp[0], tmp[3:1]};
+	end
+
+endmodule
+
+
+
+// It performs the last operation of the algorithm
+// According to: H[i] = (H[(i+1) mod 8] ^ S(C6[i])) << |_ i/2 _|
+module H_last_computation(
+	input [7:0] [3:0] H_main, 		// Results from the main 4 rounds
+	input [63:0] counter, 			// Message length counter
+	output reg [7:0] [3:0] H_last	// Digest
+);
+
+	reg [7:0] [5:0] idx;
+	reg [7:0] [3:0] S_value;
+	reg [7:0] [3:0] tmp;
+	reg [7:0] [3:0] h_out;
+
+	// 0
+	Counter_to_C_6 C6_0(
+		.in_c(counter[63:56]), 
+		.out_c(idx[0])
+		);
+
+	S_Box Sbox0(
+		.in(idx[0]), 
+		.out(S_value[7])
+		);
+	
+	// 1
+	Counter_to_C_6 C6_1(
+		.in_c(counter[55:48]),
+		.out_c(idx[1])
+		);
+	S_Box Sbox1(
+		.in(idx[1]),
+		.out(S_value[6])
+		);
+	
+	// 2
+	Counter_to_C_6 C6_2(
+		.in_c(counter[47:40]),
+		.out_c(idx[2])
+		);
+	S_Box Sbox2(
+		.in(idx[2]),
+		.out(S_value[5])
+		);
+	
+	// 3
+	Counter_to_C_6 C6_3(
+		.in_c(counter[39:32]),
+		.out_c(idx[3])
+		);
+	S_Box Sbox3(
+		.in(idx[3]),
+		.out(S_value[4])
+		);
+	
+	// 4
+	Counter_to_C_6 C6_4(
+		.in_c(counter[31:24]),
+		.out_c(idx[4])
+		);
+	S_Box Sbox4(
+		.in(idx[4]),
+		.out(S_value[3])
+		);
+	
+	// 5
+	Counter_to_C_6 C6_5(
+		.in_c(counter[23:16]),
+		.out_c(idx[5])
+		);
+	S_Box Sbox5(
+		.in(idx[5]),
+		.out(S_value[2])
+		);
+	
+	// 6
+	Counter_to_C_6 C6_6(
+		.in_c(counter[15:8]),
+		.out_c(idx[6])
+		);
+	S_Box Sbox6(
+		.in(idx[6]),
+		.out(S_value[1])
+		);
+
+	// 7
+	Counter_to_C_6 C6_7(
+		.in_c(counter[7:0]),
+		.out_c(idx[7])
+		);
+	S_Box Sbox7(
+		.in(idx[7]),
+		.out(S_value[0])
+		);
+	
+
+	always @(*) begin
+		tmp[0] = H_main[1] ^ S_value[0];
+		h_out[0] = tmp[0];
+		tmp[1] = H_main[2] ^ S_value[1];
+		h_out[1] = tmp[1];
+		tmp[2] = H_main[3] ^ S_value[2];
+		h_out[2] = {tmp[2][2:0], tmp[2][3]};
+		tmp[3] = H_main[4] ^ S_value[3];
+		h_out[3] = {tmp[3][2:0], tmp[3][3]};
+		tmp[4] = H_main[5] ^ S_value[4];
+		h_out[4] = {tmp[4][1:0], tmp[4][3:2]};
+		tmp[5] = H_main[6] ^ S_value[5];
+		h_out[5] = {tmp[5][1:0], tmp[5][3:2]};
+		tmp[6] = H_main[7] ^ S_value[6];
+		h_out[6] = {tmp[6][0], tmp[6][3:1]};
+		tmp[7] = H_main[0] ^ S_value[7];
+		h_out[7] = {tmp[7][0], tmp[7][3:1]};
+		
+		H_last = {h_out[7], h_out[6], h_out[5], h_out[4], h_out[3], h_out[2], h_out[1], h_out[0]};
+	end
+
+	
+endmodule
+
+
+
+
+
 /************************************** UTILITY FUNCTIONS **************************************/
 
 
@@ -86,380 +445,3 @@ module S_Box(input [5:0] in, output reg [3:0] out);
 		endcase
    	end
 endmodule
-
-// It performs one round of the main hash algorithm
-// According to: H[i] = (H[(i+1) mod 8] ^ S(M6)) << |_ i/2 _|
-module Hash_Round(
-	input [3:0] S_Box_value, // output of the DES S-Box LUT table
-	input [7:0] [3:0] h_main, // previous hash values
-    output reg [7:0] [3:0] h_out_r // new hash values
-);
-
-	reg [3:0] tmp;	
-	always @(*) begin
-
-		// 0
-		tmp = h_main[1] ^ S_Box_value; 
-		h_out_r[0] = tmp;
-
-		// 1
-		tmp = h_main[2] ^ S_Box_value; 
-		h_out_r[1] = tmp;
-
-		// 2
-		tmp = h_main[3] ^ S_Box_value; 
-		h_out_r[2] = {tmp[2:0], tmp[3]};
-
-		// 3
-		tmp = h_main[4] ^ S_Box_value; 
-		h_out_r[3] = {tmp[2:0], tmp[3]};
-
-		// 4
-		tmp = h_main[5] ^ S_Box_value; 
-		h_out_r[4] = {tmp[1:0], tmp[3:2]};
-
-		// 5
-		tmp = h_main[6] ^ S_Box_value; 
-		h_out_r[5] = {tmp[1:0], tmp[3:2]};
-
-		// 6
-		tmp = h_main[7] ^ S_Box_value; 
-		h_out_r[6] = {tmp[0], tmp[3:1]};
-
-		// 7
-		tmp = h_main[0] ^ S_Box_value; 
-		h_out_r[7] = {tmp[0], tmp[3:1]};
-	end
-
-endmodule
-
-// It performs the last operation of the algorithm
-// According to: H[i] = (H[(i+1) mod 8] ^ S(C6[i])) << |_ i/2 _|
-/*module H_last_computation(
-	input [7:0] [3:0] H_main, 		// Results from the main 4 rounds
-	input [63:0] counter, 			// Message length counter
-	output reg [7:0] [3:0] H_last	// Digest
-);
-
-	reg [7:0] [5:0] idx;
-	reg [7:0] [3:0] S_value;
-	reg [7:0] [3:0] tmp;
-	reg [7:0] [3:0] h_out;
-
-	// 0
-	Counter_to_C_6 C6_0(
-		.in_c(counter[63:56]), 
-		.out_c(idx[0])
-		);
-	S_Box Sbox0(
-		.in(idx[0]), 
-		.out(S_value[0])
-		);
-	
-	// 1
-	Counter_to_C_6 C6_1(
-		.in_c(counter[55:48]),
-		.out_c(idx[1])
-		);
-	S_Box Sbox1(
-		.in(idx[1]),
-		.out(S_value[1])
-		);
-	
-
-	// 2
-	Counter_to_C_6 C6_2(
-		.in_c(counter[47:40]),
-		.out_c(idx[2])
-		);
-	S_Box Sbox2(
-		.in(idx[2]),
-		.out(S_value[2])
-		);
-	
-
-	// 3
-	Counter_to_C_6 C6_3(
-		.in_c(counter[39:32]),
-		.out_c(idx[3])
-		);
-	S_Box Sbox3(
-		.in(idx[3]),
-		.out(S_value[3])
-		);
-	
-
-	// 4
-	Counter_to_C_6 C6_4(
-		.in_c(counter[31:24]),
-		.out_c(idx[4])
-		);
-	S_Box Sbox4(
-		.in(idx[4]),
-		.out(S_value[4])
-		);
-	
-
-	// 5
-	Counter_to_C_6 C6_5(
-		.in_c(counter[23:16]),
-		.out_c(idx[5])
-		);
-	S_Box Sbox5(
-		.in(idx[5]),
-		.out(S_value[5])
-		);
-	
-
-	// 6
-	Counter_to_C_6 C6_6(
-		.in_c(counter[15:8]),
-		.out_c(idx[6])
-		);
-	S_Box Sbox6(
-		.in(idx[6]),
-		.out(S_value[6])
-		);
-	
-
-	// 7
-	Counter_to_C_6 C6_7(
-		.in_c(counter[7:0]),
-		.out_c(idx[7])
-		);
-	S_Box Sbox7(
-		.in(idx[7]),
-		.out(S_value[7])
-		);
-	
-
-	always @(*) begin
-		tmp[0] = H_main[1] ^ S_value[0];
-		h_out[0] = tmp[0];
-		tmp[1] = H_main[2] ^ S_value[1];
-		h_out[1] = tmp[1];
-		tmp[2] = H_main[3] ^ S_value[2];
-		h_out[2] = {tmp[2][2:0], tmp[2][3]};
-		tmp[3] = H_main[4] ^ S_value[3];
-		h_out[3] = {tmp[3][2:0], tmp[3][3]};
-		tmp[4] = H_main[5] ^ S_value[4];
-		h_out[4] = {tmp[4][1:0], tmp[4][3:2]};
-		tmp[5] = H_main[6] ^ S_value[5];
-		h_out[5] = {tmp[5][1:0], tmp[5][3:2]};
-		tmp[6] = H_main[7] ^ S_value[6];
-		h_out[6] = {tmp[6][0], tmp[6][3:1]};
-		tmp[7] = H_main[0] ^ S_value[7];
-		h_out[7] = {tmp[7][0], tmp[7][3:1]};
-		
-		H_last = {h_out[0],h_out[1],h_out[2],h_out[3],h_out[4],h_out[5],h_out[6],h_out[7]};
-	end
-
-	
-endmodule*/
-
-// Main hash algorithm, 4 rounds
-module H_main_computation(
-	input [7:0] m,
-	input [7:0] [3:0] h_main,
-	output [7:0] [3:0] h_main_out
-);
-	
-	// DES S-Box value computation
-	reg [3:0] s_value;
-	// message byte character compression
-	wire [5:0] m6;
-	assign m6 = {m[3]^m[2], m[1], m[0], m[7], m[6], m[5]^m[4]};
-	/*Message_To_M_6 M_to_M6(
-		.in(m),
-		.out(m6)
-		);*/
-		
-	S_Box SBox(
-		.in(m6),
-		.out(s_value)
-		);
-
-	// first round
-	//wire [7:0] [3:0] h_main_1;
-	Hash_Round Round_1(
-		.S_Box_value(s_value),
-		.h_main(h_main),
-		.h_out_r(h_main_out)
-		);
-
-	// second round
-	/*wire [7:0] [3:0] h_main_2;
-	Hash_Round Round_2(
-		.S_Box_value(s_value),
-		.h_main(h_main_1),
-		.h_out_r(h_main_out)
-		);*/
-
-	// third round
-	/*wire [7:0] [3:0] h_main_3;
-	Hash_Round Round_3(
-		.S_Box_value(s_value),
-		.h_main(h_main_2),
-		.h_out_r(h_main_3)
-		);
-
-	// fourth round
-	Hash_Round Round_4(
-		.S_Box_value(s_value),
-		.h_main(h_main_3),
-		.h_out_r(h_main_out)
-		);*/
-
-endmodule
-
-
-
-
-// Main module that implements the FSM and instantiates the submodules
-module full_hash_des_box(
-	input rst_n,
-	input clk,
-	input M_valid,
-	input [7:0] message,
-	input [63:0] counter,
-	output reg [31:0] digest_out,
-	output reg hash_ready
-);
-
-	// nibbles initialization value for the H[i] variables 
-	localparam h_0 = 4'h4;
-	localparam h_1 = 4'hB;
-	localparam h_2 = 4'h7;
-	localparam h_3 = 4'h1;
-	localparam h_4 = 4'hD;
-	localparam h_5 = 4'hF;
-	localparam h_6 = 4'h0;
-	localparam h_7 = 4'h3;
-
-	// useful names for the states of the FSM
-	localparam S0 = 2'b00;
-	localparam S1 = 2'b01;
-	localparam S2 = 2'b10;
-	localparam S3 = 2'b11;
-
-
-	reg [7:0] MSG; 			// input character
-	reg [63:0] C_COUNT; 	// remaining bytes
-	reg [63:0] COUNTER;
-	reg [5:0] M_6; 			// result of the compression operation on the message character
-	reg [7:0] [5:0] C_6; 	// For the result of the final operation on the message character
-	reg [7:0] [3:0] H_MAIN;	// Used for the main computation
-	reg [7:0] [3:0] H_MAIN_RESULT; // USed to store the result of the main computation
-	wire [7:0] [3:0] H_LAST; // Used for the last computation
-	reg [1:0] STAR;	// Status register for the FSM
-	reg [1:0] NEXT_STATE;
-
-	// Store partial results, between different characters of the same message
-	wire [7:0] [3:0] half_hash;	
-
-
-	H_main_computation main(
-		.m(MSG),
-		.h_main(H_MAIN),
-		.h_main_out(half_hash)
-	);
-	
-
-	/*H_last_computation final_op(
-		.H_main(H_MAIN), 
-		.counter(COUNTER), 
-		.H_last(H_LAST)
-	);*/
-
-
-	
-	// Finite State Machine, see documentation
-	always @(posedge clk or negedge rst_n) begin
-		if(!rst_n) begin
-			// initialization 
-			hash_ready <= 0;
-			NEXT_STATE <= S0;
-		end else
-			STAR <= NEXT_STATE;
-	end
-
-	always @(*) begin 
-		case(STAR)
-
-				// initialization and sampling
-				S0: begin 
-
-					// input sampling
-					MSG <= message; 
-
-					// input sampling or hold previous value
-					C_COUNT <= counter;
-					//C_COUNT <= counter;
-					
-					// sampling the real length of the message
-					COUNTER <= counter;
-
-					// first case: another character of the same message to compute yet,
-					//			   "transfer" of the computed value
-					// second case: inizialization 
-					H_MAIN <= {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
-                    /*H_MAIN[0]<= h_0;
-					H_MAIN[1]<= h_1;
-					H_MAIN[2]<= h_2;
-					H_MAIN[3]<= h_3;
-					H_MAIN[4]<= h_4;
-					H_MAIN[5]<= h_5;
-					H_MAIN[6]<= h_6;
-					H_MAIN[7]<= h_7;*/
-					// conditional state transfer
-					NEXT_STATE <= (M_valid === 1 && C_COUNT > 0) ? S1 : S0; 
-				end 
-
-				S1: begin 
-
-					// in case of a new character elaboration
-					hash_ready <= 0;
-					
-					if(M_valid === 1) begin
-					
-						// result of the elaboration of the 4 rounds
-						H_MAIN_RESULT <= half_hash;
-
-						// count the number of elaborated bytes
-						C_COUNT <= C_COUNT - 1; // il problema è qua e non ne ho la minima idea del perchè
-						
-					end
-					
-					MSG <= message;
-					
-					// state transfer
-					NEXT_STATE <= S2;
-
-				end
-
-
-				// last transformation (digest) signalling and output, and return to S0
-				S2: begin
-					
-					// digest assigned with the final result of the last computation
-					digest_out <= H_MAIN_RESULT;
-
-					// signal the output
-					hash_ready <= 1;
-					
-					// unconditional state trasfer
-					NEXT_STATE <= S0;
-				end
-
-				default: NEXT_STATE <= S0;
-			endcase
-	end
-
-
-			
-	
-
-endmodule
-
-
-
