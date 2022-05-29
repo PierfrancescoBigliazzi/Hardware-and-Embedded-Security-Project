@@ -32,18 +32,17 @@ module full_hash_des_box(
 	localparam S0 = 2'b00;
 	localparam S1 = 2'b01;
 	localparam S2 = 2'b10;
-	localparam S3 = 2'b11;
+	// localparam S3 = 2'b11; // not used
 
-	reg [7:0] MSG; 			// input character
-	reg [63:0] C_COUNT; 	// remaining bytes
-	reg [63:0] COUNTER;
-	reg [5:0] M_6; 			// result of the compression operation on the message character
-	reg [7:0][5:0] C_6; 	// For the result of the final operation on the message character
+	reg [7:0] MSG; 			 // input character
+	reg [63:0] C_COUNT; 	 // remaining bytes
+	reg [63:0] COUNTER;		 // real byte length
+	reg [5:0] M_6; 			 // result of the compression operation on the message character
+	reg [7:0][5:0] C_6; 	 // For the result of the final operation on the message character
 	reg [7:0]  [3:0] H_MAIN; // Used for the main computation
-	reg [7:0] [3:0] H_LAST; // Used for the last computation
-	reg [1:0] STAR;			// Status register for the FSM
-	reg flag;
-	reg MV;
+	reg [7:0] [3:0] H_LAST;  // Used for the last computation
+	reg [1:0] STAR;			 // Status register for the FSM
+	reg flag;				 // to discriminate the initialization
 
 	// Store partial results, between different characters of the same message
 	wire [7:0] [3:0] half_hash;	
@@ -57,82 +56,84 @@ module full_hash_des_box(
 
 	H_last_computation final_op(
 		.H_main(H_MAIN), 
-		.counter(C_COUNT), 
+		.counter(COUNTER), 
 		.H_last(H_LAST)
 	);
 
 
 	// Finite State Machine, see documentation
 	always @(posedge clk or negedge rst_n) begin
+
 		if(!rst_n) begin
+
 			// initialization 
 			STAR <= S0;
 			hash_ready <= 0;
 			flag <= 0;
-			MV <= 0;
+
 		end else begin
+
 			case(STAR)
 
-					S0: begin
+				// input sampling
+				S0: begin
 
-						// state transfer if inputs are valid
-						STAR <= (M_valid == 1) ? S1 : S0;
+					// state transfer if inputs are valid
+					STAR <= (M_valid == 1) ? ((counter > 0) ? S1: S2) : S0;
 
-						// input sampling
-						MSG <= message; 
+					// input sampling
+					MSG <= message; 
 
-						// input sampling or hold previous value
-						C_COUNT <= (flag == 1) ? C_COUNT : counter;
-						
-						// sampling the real length of the message
-						COUNTER <= counter;
+					// input sampling or hold previous value
+					C_COUNT <= (flag == 1) ? C_COUNT : counter;
+					
+					// sampling the real length of the message
+					COUNTER <= counter;
 
-						H_MAIN <= (flag == 1) ? half_hash : {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
+					// update the main register with the computed value, or initialize it
+					H_MAIN <= (flag == 1) ? half_hash : {h_0, h_1, h_2, h_3, h_4, h_5, h_6, h_7};
+				end
 
-					end
+				// main computation
+				S1: begin 
 
-					S1: begin 
+					// in case of a new character elaboration
+					hash_ready <= 0;
+					
+					// result of the elaboration of the 4 rounds
+					H_MAIN <= half_hash;
 
-						// in case of a new character elaboration
-						hash_ready <= 0;
-						
-						// result of the elaboration of the 4 rounds
-						H_MAIN <= half_hash;
+					// count the number of elaborated bytes
+					C_COUNT <= C_COUNT - 1;
+					
+					// state transfer
+					STAR <= (C_COUNT == 1) ? S2 : S0;
 
-						// count the number of elaborated bytes
-						C_COUNT <= C_COUNT - 1;
-						
-						// state transfer
-						STAR <= (C_COUNT == 1) ? S2 : S0;
+					// remember that the message computation is started
+					flag <= 1;
+				end
 
-						// 
-						flag <= 1;
+				// last transformation signalling and digest output, return to S0
+				S2: begin
+					
+					// digest assigned with the final result of the last computation
+					digest_out <= H_LAST;
 
-					end
+					// signal the output
+					hash_ready <= 1;
+					
+					// unconditional state trasfer
+					STAR <= S0;
 
-					// last transformation (digest) signalling and output, and return to S0
-					S2: begin
-						
-						// digest assigned with the final result of the last computation
-						digest_out <= H_LAST;
+					// the elaboration has finished
+					flag <= 0;
+				end
 
-						// signal the output
-						hash_ready <= 1;
-						
-						// unconditional state trasfer
-						STAR <= S0;
-
-						//
-						flag <= 0;
-					end
-
-					default: STAR <= S0;
-				endcase
-
+				// avoid inferred latch
+				default: STAR <= S0;
+			endcase
 		end
-
 	end
-
 endmodule
 
 
@@ -259,9 +260,10 @@ module H_last_computation(
 		.in_c(counter[63:56]), 
 		.out_c(idx[0])
 		);
+
 	S_Box Sbox0(
 		.in(idx[0]), 
-		.out(S_value[0])
+		.out(S_value[7])
 		);
 	
 	// 1
@@ -271,10 +273,9 @@ module H_last_computation(
 		);
 	S_Box Sbox1(
 		.in(idx[1]),
-		.out(S_value[1])
+		.out(S_value[6])
 		);
 	
-
 	// 2
 	Counter_to_C_6 C6_2(
 		.in_c(counter[47:40]),
@@ -282,10 +283,9 @@ module H_last_computation(
 		);
 	S_Box Sbox2(
 		.in(idx[2]),
-		.out(S_value[2])
+		.out(S_value[5])
 		);
 	
-
 	// 3
 	Counter_to_C_6 C6_3(
 		.in_c(counter[39:32]),
@@ -293,10 +293,9 @@ module H_last_computation(
 		);
 	S_Box Sbox3(
 		.in(idx[3]),
-		.out(S_value[3])
+		.out(S_value[4])
 		);
 	
-
 	// 4
 	Counter_to_C_6 C6_4(
 		.in_c(counter[31:24]),
@@ -304,10 +303,9 @@ module H_last_computation(
 		);
 	S_Box Sbox4(
 		.in(idx[4]),
-		.out(S_value[4])
+		.out(S_value[3])
 		);
 	
-
 	// 5
 	Counter_to_C_6 C6_5(
 		.in_c(counter[23:16]),
@@ -315,10 +313,9 @@ module H_last_computation(
 		);
 	S_Box Sbox5(
 		.in(idx[5]),
-		.out(S_value[5])
+		.out(S_value[2])
 		);
 	
-
 	// 6
 	Counter_to_C_6 C6_6(
 		.in_c(counter[15:8]),
@@ -326,9 +323,8 @@ module H_last_computation(
 		);
 	S_Box Sbox6(
 		.in(idx[6]),
-		.out(S_value[6])
+		.out(S_value[1])
 		);
-	
 
 	// 7
 	Counter_to_C_6 C6_7(
@@ -337,7 +333,7 @@ module H_last_computation(
 		);
 	S_Box Sbox7(
 		.in(idx[7]),
-		.out(S_value[7])
+		.out(S_value[0])
 		);
 	
 
@@ -359,7 +355,7 @@ module H_last_computation(
 		tmp[7] = H_main[0] ^ S_value[7];
 		h_out[7] = {tmp[7][0], tmp[7][3:1]};
 		
-		H_last = {h_out[0], h_out[1], h_out[2], h_out[3], h_out[4], h_out[5], h_out[6], h_out[7]};
+		H_last = {h_out[7], h_out[6], h_out[5], h_out[4], h_out[3], h_out[2], h_out[1], h_out[0]};
 	end
 
 	

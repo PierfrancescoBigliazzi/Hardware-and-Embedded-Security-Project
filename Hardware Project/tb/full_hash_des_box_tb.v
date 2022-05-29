@@ -35,54 +35,58 @@ module full_hash_des_box_testbench();
 	);
 	
 	initial begin
-				
-	
 		
-		@(reset_deassertion);
-		DUT_M_valid = 0;
-
-		
-		
-		@(posedge clk);
-		
-		fork
-		
-			begin: TEST_UPPERCASE_A
-			    localparam expected_digest_A = 32'h4dd99065;
-				$display("TEST_CHAR_A");
-				@ (posedge clk);
-				DUT_message = "A";
-				DUT_counter = 1;
-				DUT_M_valid = 1;
-				
-				@ (posedge clk);
-				DUT_M_valid = 0;
-				DUT_message = "B";
-				DUT_counter = 0;
-				
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				$display(DUT_hash_ready);
-				$display("Digest A character : %h", DUT_digest_out);
-				$display("Test result [ %s ] ", expected_digest_A == DUT_digest_out ? "Successful" : "Failure" );
-				$display("Test finished");
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-				@ (posedge clk);
-
-			end: TEST_UPPERCASE_A
+		begin: TEST_ZERO_LENGTH
 			
-		join
+			localparam expected_digest_empty = 32'h956F7883 ;
+
+			@(reset_deassertion);
+			DUT_M_valid = 0;
+
+			$display("TEST_ZERO_LENGTH");
+			@ (posedge clk);
+			DUT_counter = 0;
+			DUT_M_valid = 1;
+			
+			@ (posedge clk);
+			DUT_M_valid = 0;
+			
+			@ (posedge clk);
+			@ (posedge clk);
+			@ (posedge clk);
+			$display("Digest of empty sequence : %h", DUT_digest_out);
+			$display("Test result [ %s ] ", expected_digest_empty == DUT_digest_out ? "Successful" : "Failure" );
+			$display("TEST_ZERO_LENGTH finished\n");
+			@ (posedge clk);
+
+		end: TEST_ZERO_LENGTH
+
 		
+
+		begin: TEST_UPPERCASE_A
+			
+			localparam expected_digest_A = 32'h2dd99066;
+
+
+			$display("TEST_CHAR_A");
+			@ (posedge clk);
+			DUT_message = "A";
+			DUT_counter = 1;
+			DUT_M_valid = 1;
+			
+			@ (posedge clk);
+			DUT_M_valid = 0;
+			
+			@ (posedge clk);
+			@ (posedge clk);
+			@ (posedge clk);
+			$display("Digest A character : %h", DUT_digest_out);
+			$display("Test result [ %s ] ", expected_digest_A == DUT_digest_out ? "Successful" : "Failure" );
+			$display("TEST_CHAR_A finished\n");
+			@ (posedge clk);
+
+		end: TEST_UPPERCASE_A
+	
 		$stop;
 		
 	end
