@@ -89,6 +89,7 @@ module full_hash_des_box_testbench();
 	
 		$stop;
 		
+		// another testbench with same message sequence to check same output
 	end
 
 endmodule

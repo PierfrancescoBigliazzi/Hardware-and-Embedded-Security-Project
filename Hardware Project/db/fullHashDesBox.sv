@@ -4,8 +4,6 @@
 // Professors: Saponara Sergio, Crocetti Luca
 // repo: https://github.com/Portgas97/fpga_full_hash_algorithm_des_sbox
 
-// TODO: check on the validity of the input (ASCII range) ???
-
 
 // Main module that implements the FSM and instantiates the submodules
 module full_hash_des_box(
@@ -37,8 +35,6 @@ module full_hash_des_box(
 	reg [7:0] MSG; 			 // input character
 	reg [63:0] C_COUNT; 	 // remaining bytes
 	reg [63:0] COUNTER;		 // real byte length
-	reg [5:0] M_6; 			 // result of the compression operation on the message character
-	reg [7:0][5:0] C_6; 	 // For the result of the final operation on the message character
 	reg [7:0]  [3:0] H_MAIN; // Used for the main computation
 	reg [7:0] [3:0] H_LAST;  // Used for the last computation
 	reg [1:0] STAR;			 // Status register for the FSM
@@ -82,7 +78,7 @@ module full_hash_des_box(
 					STAR <= (M_valid == 1) ? ((counter > 0) ? S1: S2) : S0;
 
 					// input sampling
-					MSG <= message; 
+					MSG <= message;
 
 					// input sampling or hold previous value
 					C_COUNT <= (flag == 1) ? C_COUNT : counter;
@@ -92,13 +88,15 @@ module full_hash_des_box(
 
 					// update the main register with the computed value, or initialize it
 					H_MAIN <= (flag == 1) ? half_hash : {h_0, h_1, h_2, h_3, h_4, h_5, h_6, h_7};
+
+					// in case of a new character elaboration
+					hash_ready <= (M_valid == 1) ? 0 : hash_ready;
 				end
 
 				// main computation
-				S1: begin 
 
-					// in case of a new character elaboration
-					hash_ready <= 0;
+				// in this module we must be able to sample the input -------------------------------------------------------------------------
+				S1: begin 
 					
 					// result of the elaboration of the 4 rounds
 					H_MAIN <= half_hash;
@@ -129,7 +127,6 @@ module full_hash_des_box(
 					flag <= 0;
 				end
 
-				// avoid inferred latch
 				default: STAR <= S0;
 			endcase
 		end
@@ -196,6 +193,8 @@ endmodule
 
 // It performs one round of the main hash algorithm
 // According to: H[i] = (H[(i+1) mod 8] ^ S(M6)) << |_ i/2 _|
+
+// RIVEDI L'UTILIZZO DELLA VARIABILE TMP --------------------------------------------------------
 module Hash_Round(
 	input [3:0] S_Box_value, // output of the DES S-Box LUT table
 	input [7:0] [3:0] h_main, // previous hash values
@@ -260,7 +259,6 @@ module H_last_computation(
 		.in_c(counter[63:56]), 
 		.out_c(idx[0])
 		);
-
 	S_Box Sbox0(
 		.in(idx[0]), 
 		.out(S_value[7])
@@ -340,25 +338,31 @@ module H_last_computation(
 	always @(*) begin
 		tmp[0] = H_main[1] ^ S_value[0];
 		h_out[0] = tmp[0];
+
 		tmp[1] = H_main[2] ^ S_value[1];
 		h_out[1] = tmp[1];
+
 		tmp[2] = H_main[3] ^ S_value[2];
 		h_out[2] = {tmp[2][2:0], tmp[2][3]};
+
 		tmp[3] = H_main[4] ^ S_value[3];
 		h_out[3] = {tmp[3][2:0], tmp[3][3]};
+
 		tmp[4] = H_main[5] ^ S_value[4];
 		h_out[4] = {tmp[4][1:0], tmp[4][3:2]};
+
 		tmp[5] = H_main[6] ^ S_value[5];
 		h_out[5] = {tmp[5][1:0], tmp[5][3:2]};
+
 		tmp[6] = H_main[7] ^ S_value[6];
 		h_out[6] = {tmp[6][0], tmp[6][3:1]};
+
 		tmp[7] = H_main[0] ^ S_value[7];
 		h_out[7] = {tmp[7][0], tmp[7][3:1]};
 		
 		H_last = {h_out[7], h_out[6], h_out[5], h_out[4], h_out[3], h_out[2], h_out[1], h_out[0]};
 	end
 
-	
 endmodule
 
 
@@ -441,7 +445,8 @@ module S_Box(input [5:0] in, output reg [3:0] out);
 					4'b1110: out = 4'b0101; 4'b1111: out = 4'b0011;
 				endcase
 
-			default: out = 4'bXXXX;
+			// not necessary 
+			// default: out = 4'bXXXX;
 		endcase
    	end
 endmodule
