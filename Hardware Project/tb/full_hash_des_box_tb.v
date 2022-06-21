@@ -41,7 +41,7 @@ module full_hash_des_box_testbench();
 		begin: TEST_ZERO_LENGTH
 			
 			// expected output 
-			localparam expected_digest_empty = 32'h956F7883 ;
+			localparam expected_digest_empty = 32'h83656fd2;
 
 			@(reset_deassertion);
 			DUT_M_valid = 0;
@@ -75,7 +75,7 @@ module full_hash_des_box_testbench();
 		begin: TEST_UPPERCASE_A
 			
 			// expected output
-			localparam expected_digest_A = 32'h2dd99066;
+			localparam expected_digest_A = 32'hc087233c;
 
 			$display("TEST_CHAR_A");
 
