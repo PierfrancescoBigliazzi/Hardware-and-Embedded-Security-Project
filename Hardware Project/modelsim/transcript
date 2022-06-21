@@ -28,3 +28,5 @@ run -all
 # ** Note: $stop    : C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v(90)
 #    Time: 250 ps  Iteration: 1  Instance: /full_hash_des_box_testbench
 # Break in Module full_hash_des_box_testbench at C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v line 90
+# End time: 16:00:24 on Jun 16,2022, Elapsed time: 0:22:37
+# Errors: 0, Warnings: 2

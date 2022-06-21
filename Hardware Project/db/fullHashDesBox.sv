@@ -1,3 +1,4 @@
+
 // This file contains the full_hash_des_sbox front-end RTL description in SystemVerilog for
 // the "Hardware and Embedded Security" course project of the University of Pisa
 // Students: Venturini Francesco, Bigliazzi Pierfrancesco
@@ -16,7 +17,7 @@ module full_hash_des_box(
 	output reg hash_ready
 );
 
-	// nibbles initialization value for the H[i] variables 
+	// nibbles initialization values for the H[i] variables 
 	localparam h_0 = 4'h4;
 	localparam h_1 = 4'hB;
 	localparam h_2 = 4'h7;
@@ -30,19 +31,20 @@ module full_hash_des_box(
 	localparam S0 = 2'b00;
 	localparam S1 = 2'b01;
 	localparam S2 = 2'b10;
-	// localparam S3 = 2'b11; // not used
 
 	reg [7:0] MSG; 			 // input character
 	reg [63:0] C_COUNT; 	 // remaining bytes
 	reg [63:0] COUNTER;		 // real byte length
-	reg [7:0]  [3:0] H_MAIN; // Used for the main computation
-	reg [7:0] [3:0] H_LAST;  // Used for the last computation
-	reg [1:0] STAR;			 // Status register for the FSM
-	reg flag;				 // to discriminate the initialization
+	reg [7:0]  [3:0] H_MAIN; // used for the main computation
+	reg [7:0] [3:0] H_LAST;  // used for the last computation
+	reg [1:0] STAR;			 // status register for the FSM
+	reg flag;				 // to discriminate initialization and already started computation
 
 	// Store partial results, between different characters of the same message
 	wire [7:0] [3:0] half_hash;	
 
+
+	// main module instantiation
 	H_main_computation main(
 		.m(MSG),
 		.h_main(H_MAIN),
@@ -50,6 +52,7 @@ module full_hash_des_box(
 	);
 	
 
+	// last computation instantiation
 	H_last_computation final_op(
 		.H_main(H_MAIN), 
 		.counter(COUNTER), 
@@ -105,10 +108,14 @@ module full_hash_des_box(
 					C_COUNT <= C_COUNT - 1;
 					
 					// state transfer
-					STAR <= (C_COUNT == 1) ? S2 : S0;
+					STAR <= (C_COUNT == 1) ? S2 : (M_valid == 1) ? S1 : S0;
 
 					// remember that the message computation is started
 					flag <= 1;
+
+					// needed for the consecutive input sampling
+					MSG <= (M_valid == 1) ? message : MSG;
+
 				end
 
 				// last transformation signalling and digest output, return to S0
@@ -193,8 +200,6 @@ endmodule
 
 // It performs one round of the main hash algorithm
 // According to: H[i] = (H[(i+1) mod 8] ^ S(M6)) << |_ i/2 _|
-
-// RIVEDI L'UTILIZZO DELLA VARIABILE TMP --------------------------------------------------------
 module Hash_Round(
 	input [3:0] S_Box_value, // output of the DES S-Box LUT table
 	input [7:0] [3:0] h_main, // previous hash values
@@ -204,13 +209,11 @@ module Hash_Round(
 	reg [3:0] tmp;	
 	always @(*) begin
 
-		// 0
-		tmp = h_main[1] ^ S_Box_value; 
-		h_out[0] = tmp;
+		// 0 
+		h_out[0] = h_main[1] ^ S_Box_value;
 
-		// 1
-		tmp = h_main[2] ^ S_Box_value; 
-		h_out[1] = tmp;
+		// 1 
+		h_out[1] = h_main[2] ^ S_Box_value;
 
 		// 2
 		tmp = h_main[3] ^ S_Box_value; 
@@ -387,8 +390,8 @@ endmodule
 
 
 // This module implements a LUT version of the DES S-box
-//The first and last bits of the input select the row of the S-Box
-//The 4 central bits select the column of the S-box
+// The first and the last bits of the input select the row of the S-Box
+// The 4 central bits select the column of the S-box
 module S_Box(input [5:0] in, output reg [3:0] out);
 
   	reg [1:0] row;
@@ -445,8 +448,7 @@ module S_Box(input [5:0] in, output reg [3:0] out);
 					4'b1110: out = 4'b0101; 4'b1111: out = 4'b0011;
 				endcase
 
-			// not necessary 
-			// default: out = 4'bXXXX;
+			// default not necessary 
 		endcase
    	end
 endmodule
