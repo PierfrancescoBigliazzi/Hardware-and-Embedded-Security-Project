@@ -11,7 +11,7 @@ import string
 # # # # # # # # # # # # # # # # #   CONSTANTS  # # # # # # # # # # # # # # # # # 
 # ############################################################################ #
 
-H_init = [b'0100',b'1011',b'0111',b'0001',b'1101',b'1111',b'0000',b'0011']
+H_init = [b'0011',b'0000',b'1111',b'1101',b'0001',b'0111',b'1011',b'0100']
 H_global = []
 
 # S-Box
@@ -74,11 +74,12 @@ def compression_function(char_8bit):
     print("Compress function output: ", char_6bit) #  001010 with input 'A'
     return char_6bit
 
-def final_compression_function(char_64bit,index):
+def final_compression_function(char_64bit, index):
     #this is to have [0] as the LSB
-    print("Before inversion: ",char_64bit)
+    #print("Before inversion: ", char_64bit)
+    #print()
     char_64bit = char_64bit[::-1]
-    print("After inversion: ",char_64bit)#if the length is 1 byte then we all 0s except the LSB which is 00000001 
+    #print("After inversion: ", char_64bit)#if the length is 1 byte then we have all 0s except the LSB which is 00000001 
     dim = 8
     char_6bit_index = str(int(char_64bit[(index*dim) + 7]) ^ int(char_64bit[(index*dim) + 1])) \
                       + char_64bit[(index*dim) + 3] \
@@ -120,10 +121,12 @@ def xor(a, b):
 
 # TO CHECK
 def full_hash(H, msg_char):
+    global H_global
     H_tmp = []
     print("H array: ")
     print(H)
     sbox_value = compute_sbox(msg_char)
+    print(sbox_value) 
     for r in range(4):
         print("\n###########################################  ROUND " + str(r) + "  ###########################################")
         for i in range(8):
@@ -139,17 +142,40 @@ def full_hash(H, msg_char):
         print()
         print("Old H: ", H)
         H = H_tmp.copy()
-        print("New H: ", H) 
+        print("New H: ", H)
+        H_global = H.copy()
         H_tmp = []
-    H_global = H_tmp
 
-#TO CHECK
-def final_hash(H,msg_length):
+def final_hash(H, msg_length):
+    global H_global
+    H_tmp = []
+    print("Hash value: ")
+    print(H)
     msg_length = int_to_binary_64(msg_length)
+    print(msg_length)
     for i in range(8):
         print("Iterazione: " + str(i))
-        c6_index = final_compression_function(msg_length,i)
+        c6_index = final_compression_function(msg_length, i)
         print("C6["  + str(i) + "] = " +str(c6_index))
+        row = int((c6_index[0] + c6_index[5]), base =2)
+        column = int((c6_index[1] + c6_index[2] + c6_index[3] + c6_index[4]), base = 2)
+        sbox_value = des_sbox[row][column]
+        print()
+        print("Final hash des box output: ")
+        print(sbox_value)
+        tmp = (xor(H[(i+1) % 8], sbox_value))
+        print("tmp(xor result): ", tmp)
+        H_tmp.insert(i, rotl(tmp, floor(i/2)))
+        print("iteration result H: ", H_tmp)
+        print()
+    print("Old H: ", H)
+    H = H_tmp.copy()
+    print("New H: ", H)
+    H_global = H_tmp.copy()
+    H_tmp = []
+
+
+
 
 
 
@@ -175,11 +201,17 @@ print("\nLength of the message: ", len)
 
 
 H_global = H_init
+H_output = []
 # hash computation 
 for i in range(len):
     print("Character: ", msg_list[i])
     full_hash(H_global, msg_list[i])
-    #final_hash(H_global,len)
-
-# TODO ...
+    final_hash(H_global,len)
+    print("Result: ")
+    print(H_global)
+    for j in range(8):
+        H_output.insert(j, hex(int(H_global[j],2))[2:])
+    print(''.join(H_output))
+    H_output = []
+    
 
