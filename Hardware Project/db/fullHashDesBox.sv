@@ -102,7 +102,7 @@ module full_hash_des_box(
 				S1: begin 
 					
 					// result of the elaboration of the 4 rounds
-					H_MAIN <= half_hash;
+					H_MAIN <= (flag == 1) ? H_MAIN : half_hash;
 
 					// count the number of elaborated bytes
 					C_COUNT <= C_COUNT - 1;
