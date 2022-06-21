@@ -102,9 +102,40 @@ module full_hash_des_box_testbench();
 
 		end: TEST_UPPERCASE_A
 	
+		begin: TEST_SEQUENCE_AB
+			// expected output
+			localparam expected_digest_AB = 32'h0f4bd2d3;
+
+			$display("TEST_SEQUENCE_AB");
+
+			// setting inputs
+			@ (posedge clk);
+			DUT_message = "A";
+			DUT_counter = 2;
+			DUT_M_valid = 1;
+
+			@ (posedge clk);
+			DUT_message = "B";
+			
+			// deasserting the handshake variable
+			@ (posedge clk);
+			DUT_M_valid = 0;
+			
+			@ (posedge clk);
+			@ (posedge clk);
+			@ (posedge clk);
+
+			// compare the result
+			$display("Digest AB sequence : %h", DUT_digest_out);
+			$display("Test result [ %s ] ", expected_digest_AB == DUT_digest_out ? "Successful" : "Failure" );
+			
+			$display("TEST_SEQUENCE_AB finished\n");
+			@ (posedge clk);
+
+		end: TEST_SEQUENCE_AB
+
 		$stop;
 		
-		// another testbench with same message sequence to check same output
 	end
 
 endmodule

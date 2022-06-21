@@ -1,1 +1,8 @@
+{C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v} {1 {vlog -work work -stats=none {C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module full_hash_des_box_testbench
 
+Top level modules:
+	full_hash_des_box_testbench
+
+} {} {}}
