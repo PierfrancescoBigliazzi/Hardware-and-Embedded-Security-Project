@@ -206,12 +206,17 @@ H_output = []
 for i in range(len):
     print("Character: ", msg_list[i])
     full_hash(H_global, msg_list[i])
-    final_hash(H_global,len)
-    print("Result: ")
-    print(H_global)
     for j in range(8):
         H_output.insert(j, hex(int(H_global[j],2))[2:])
+    print()
     print(''.join(H_output))
     H_output = []
-    
+
+final_hash(H_global,len)
+print("Result: ")
+print(H_global)
+for j in range(8):
+    H_output.insert(j, hex(int(H_global[j],2))[2:])
+print(''.join(H_output))
+H_output = []
 
