@@ -11,24 +11,24 @@ cModel Technology
 Z0 dC:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/modelsim
 vCounter_to_C_6
 Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z2 !s110 1653837903
+Z2 !s110 1655994812
 !i10b 1
-!s100 `QfSafg9[_F:BczJ4k0og0
+!s100 KQ<KGaz32U^d9g?AP[@KJ2
 Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
-IU^R]>5OI:U7nHNh=7@hl>1
+IN1;F0leJmEIb4fD>b2bGm3
 Z4 VDg1SIo80bB@j0V0VzS_@n1
 S1
 R0
-Z5 w1653837899
+Z5 w1655992235
 Z6 8C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv
 Z7 FC:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv
-!i122 4
-L0 378 5
+!i122 8
+L0 385 5
 Z8 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z9 !s108 1653837902.000000
+Z9 !s108 1655994811.000000
 Z10 !s107 C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv|
 Z11 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv|
 !i113 1
@@ -39,17 +39,17 @@ vfull_hash_des_box
 R1
 R2
 !i10b 1
-!s100 hKT<[T0_Lm;R[oYDYFhcD1
+!s100 m2=UQ_0KP<I8UO]Z_gScH0
 R3
-I@LRFb?e;1LX6m_8[BzGbA0
+IaFkZkYg9IneJO3hYVk<R;3
 R4
 S1
 R0
 R5
 R6
 R7
-!i122 4
-L0 11 127
+!i122 8
+L0 10 138
 R8
 r1
 !s85 0
@@ -61,43 +61,45 @@ R11
 R12
 R13
 vfull_hash_des_box_testbench
-!s110 1653837904
+R1
+!s110 1655994813
 !i10b 1
-!s100 HTIFST:TKoQK`7B>84hdH0
+!s100 J7Img8D06bTFH><6SUna]1
 R3
-I:YlL8]QQl<i[OOF>OSGH_0
+I_SJ:V?Oaa7=LkXUP3BQW62
 R4
+S1
 R0
-w1653820146
-8C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v
-FC:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v
-!i122 5
-L0 7 88
+w1655994799
+8C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.sv
+FC:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.sv
+!i122 9
+L0 7 248
 R8
 r1
 !s85 0
 31
-!s108 1653837904.000000
-!s107 C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v|
-!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.v|
+!s108 1655994812.000000
+!s107 C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.sv|
 !i113 1
-o-work work
+R12
 R13
 vH_last_computation
 R1
 R2
 !i10b 1
-!s100 zAFn42Y<Hbn@i:DBcQV:^3
+!s100 <L`U5RO[<OLiBaK`_mO;C0
 R3
-IJ:XM:GEb^MA2^V`ldel9;3
+IXgoSI:5KbegB14=D2MEnP0
 R4
 S1
 R0
 R5
 R6
 R7
-!i122 4
-L0 247 116
+!i122 8
+L0 254 121
 R8
 r1
 !s85 0
@@ -113,17 +115,17 @@ vH_main_computation
 R1
 R2
 !i10b 1
-!s100 _HLeg2fa7hLG987J50NoZ3
+!s100 7[Z3cJed=Z<6MRD7>INN=2
 R3
-I_@<lahUfln@`GiXWaD1M70
+IPPGMJYdTM7ka:lQgLlRV60
 R4
 S1
 R0
 R5
 R6
 R7
-!i122 4
-L0 142 52
+!i122 8
+L0 152 49
 R8
 r1
 !s85 0
@@ -139,17 +141,17 @@ vHash_Round
 R1
 R2
 !i10b 1
-!s100 K6jGK0gZTd05@W=UOKI_20
+!s100 WRzC^Vkb511fEDS<HB>Tc0
 R3
-IT;f0djKE_h9J>VzFW>E1X1
+I3i>cTVQdbI9W[R_TiTiV;1
 R4
 S1
 R0
 R5
 R6
 R7
-!i122 4
-L0 199 43
+!i122 8
+L0 206 43
 R8
 r1
 !s85 0
@@ -161,47 +163,21 @@ R11
 R12
 R13
 n@hash_@round
-vMessage_To_M_6
-R1
-R2
-!i10b 1
-!s100 iK<B5CacdKEhdEI3WUDcF0
-R3
-IAOH;WkblYB`d1Aaka`D?H2
-R4
-S1
-R0
-R5
-R6
-R7
-!i122 4
-L0 372 3
-R8
-r1
-!s85 0
-31
-R9
-R10
-R11
-!i113 1
-R12
-R13
-n@message_@to_@m_6
 vS_Box
 R1
 R2
 !i10b 1
-!s100 Q@BV9;bAW7Xd8Poe[c2Wi0
+!s100 2Q4bLg7_hXbgJ>fG2>1^Y3
 R3
-Inon=Oc>zBVV>jU`6XT44b3
+ITM`HbiBTQ3kfT0S>ZRV[j3
 R4
 S1
 R0
 R5
 R6
 R7
-!i122 4
-L0 388 60
+!i122 8
+L0 395 60
 R8
 r1
 !s85 0
