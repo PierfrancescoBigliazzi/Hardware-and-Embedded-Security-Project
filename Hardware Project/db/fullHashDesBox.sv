@@ -1,10 +1,9 @@
+
 // This file contains the full_hash_des_sbox front-end RTL description in SystemVerilog for
 // the "Hardware and Embedded Security" course project of the University of Pisa
 // Students: Venturini Francesco, Bigliazzi Pierfrancesco
 // Professors: Saponara Sergio, Crocetti Luca
 // repo: https://github.com/Portgas97/fpga_full_hash_algorithm_des_sbox
-
-// TODO: check on the validity of the input (ASCII range) ???
 
 
 // Main module that implements the FSM and instantiates the submodules
@@ -18,7 +17,7 @@ module full_hash_des_box(
 	output reg hash_ready
 );
 
-	// nibbles initialization value for the H[i] variables 
+	// nibbles initialization values for the H[i] variables 
 	localparam h_0 = 4'h4;
 	localparam h_1 = 4'hB;
 	localparam h_2 = 4'h7;
@@ -32,22 +31,21 @@ module full_hash_des_box(
 	localparam S0 = 2'b00;
 	localparam S1 = 2'b01;
 	localparam S2 = 2'b10;
-	localparam S3 = 2'b11;
 
-	reg [7:0] MSG; 			// input character
-	reg [63:0] C_COUNT; 	// remaining bytes
-	reg [63:0] COUNTER;
-	reg [5:0] M_6; 			// result of the compression operation on the message character
-	reg [7:0][5:0] C_6; 	// For the result of the final operation on the message character
-	reg [7:0]  [3:0] H_MAIN; // Used for the main computation
-	reg [7:0] [3:0] H_LAST; // Used for the last computation
-	reg [1:0] STAR;			// Status register for the FSM
-	reg flag;
-	reg MV;
+	reg [7:0] MSG; 			 // input character
+	reg [63:0] C_COUNT; 	 // remaining bytes
+	reg [63:0] COUNTER;		 // real byte length
+	reg M_VALID_R;
+	reg [7:0] [3:0] H_MAIN; // used for the main computation
+	reg [7:0] [3:0] H_LAST;  // used for the last computation
+	reg [1:0] STAR;			 // status register for the FSM
+	reg flag;				 // to discriminate initialization and already started computation
 
 	// Store partial results, between different characters of the same message
 	wire [7:0] [3:0] half_hash;	
 
+
+	// main module instantiation
 	H_main_computation main(
 		.m(MSG),
 		.h_main(H_MAIN),
@@ -55,84 +53,92 @@ module full_hash_des_box(
 	);
 	
 
+	// last computation instantiation
 	H_last_computation final_op(
 		.H_main(H_MAIN), 
-		.counter(C_COUNT), 
+		.counter(COUNTER), 
 		.H_last(H_LAST)
 	);
 
 
 	// Finite State Machine, see documentation
 	always @(posedge clk or negedge rst_n) begin
+
 		if(!rst_n) begin
+
 			// initialization 
 			STAR <= S0;
 			hash_ready <= 0;
 			flag <= 0;
-			MV <= 0;
+
 		end else begin
+
 			case(STAR)
 
-					S0: begin
+				// input sampling
+				S0: begin
 
-						// state transfer if inputs are valid
-						STAR <= (M_valid == 1) ? S1 : S0;
+					// state transfer if inputs are valid
+					STAR <= (M_valid == 1) ? ((counter > 0) ? S1: S2) : S0;
 
-						// input sampling
-						MSG <= message; 
+					// input sampling
+					MSG <= message;
+					
+					// sampling the M_valid value
+					M_VALID_R <= M_valid;
 
-						// input sampling or hold previous value
-						C_COUNT <= (flag == 1) ? C_COUNT : counter;
-						
-						// sampling the real length of the message
-						COUNTER <= counter;
+					// sampling the real length of the message
+					C_COUNT <= counter;
+					
+					// sampling the real length of the message
+					COUNTER <= counter;
 
-						H_MAIN <= (flag == 1) ? half_hash : {h_0,h_1,h_2,h_3,h_4,h_5,h_6,h_7};
+					// initialize the main register
+					H_MAIN <= {h_0, h_1, h_2, h_3, h_4, h_5, h_6, h_7};
 
-					end
+					// in case of a new character elaboration
+					hash_ready <= (M_valid == 1) ? 0 : hash_ready;
+				end
 
-					S1: begin 
+				// main computation
+				S1: begin 
+					
+					// result of the elaboration of the 4 rounds
+					H_MAIN <= (M_VALID_R == 1) ? half_hash : H_MAIN;
+					
+					// count the number of elaborated bytes
+					C_COUNT <= (M_valid == 1) ? C_COUNT - 1 : C_COUNT;
+					
+					// continuing to sample the M_valid value
+					M_VALID_R <= M_valid;
 
-						// in case of a new character elaboration
-						hash_ready <= 0;
-						
-						// result of the elaboration of the 4 rounds
-						H_MAIN <= half_hash;
+					// state transfer
+					STAR <= (C_COUNT == 1) ? S2 : S1;
 
-						// count the number of elaborated bytes
-						C_COUNT <= C_COUNT - 1;
-						
-						// state transfer
-						STAR <= (C_COUNT == 1) ? S2 : S0;
+					// needed for the consecutive input sampling
+					MSG <= (M_valid == 1) ? message : MSG;
+				end
 
-						// 
-						flag <= 1;
+				// last transformation signalling and digest output, return to S0
+				S2: begin
+					
+					// digest assigned with the final result of the last computation
+					digest_out <= H_LAST;
 
-					end
+					// signal the output
+					hash_ready <= 1;
+					
+					// continuing to sample the M_valid value
+					M_VALID_R <= M_valid;
+					
+					// unconditional state trasfer
+					STAR <= S0;
+				end
 
-					// last transformation (digest) signalling and output, and return to S0
-					S2: begin
-						
-						// digest assigned with the final result of the last computation
-						digest_out <= H_LAST;
-
-						// signal the output
-						hash_ready <= 1;
-						
-						// unconditional state trasfer
-						STAR <= S0;
-
-						//
-						flag <= 0;
-					end
-
-					default: STAR <= S0;
-				endcase
-
+				default: STAR <= S0;
+			endcase
 		end
-
 	end
-
 endmodule
 
 
@@ -146,10 +152,7 @@ module H_main_computation(
 
 	// message byte character compression
 	wire [5:0] m6;
-	Message_To_M_6 M_to_M6(
-		.in(m),
-		.out(m6)
-		);
+    assign m6 = {m[3]^m[2], m[1], m[0], m[7], m[6], m[5]^m[4]};
 
 	// DES S-Box value computation
 	wire [3:0] s_value;
@@ -205,11 +208,11 @@ module Hash_Round(
 	always @(*) begin
 
 		// 0
-		tmp = h_main[1] ^ S_Box_value; 
+		tmp = h_main[1] ^ S_Box_value;
 		h_out[0] = tmp;
 
 		// 1
-		tmp = h_main[2] ^ S_Box_value; 
+		tmp = h_main[2] ^ S_Box_value;
 		h_out[1] = tmp;
 
 		// 2
@@ -261,7 +264,7 @@ module H_last_computation(
 		);
 	S_Box Sbox0(
 		.in(idx[0]), 
-		.out(S_value[0])
+		.out(S_value[7])
 		);
 	
 	// 1
@@ -271,10 +274,9 @@ module H_last_computation(
 		);
 	S_Box Sbox1(
 		.in(idx[1]),
-		.out(S_value[1])
+		.out(S_value[6])
 		);
 	
-
 	// 2
 	Counter_to_C_6 C6_2(
 		.in_c(counter[47:40]),
@@ -282,10 +284,9 @@ module H_last_computation(
 		);
 	S_Box Sbox2(
 		.in(idx[2]),
-		.out(S_value[2])
+		.out(S_value[5])
 		);
 	
-
 	// 3
 	Counter_to_C_6 C6_3(
 		.in_c(counter[39:32]),
@@ -293,10 +294,9 @@ module H_last_computation(
 		);
 	S_Box Sbox3(
 		.in(idx[3]),
-		.out(S_value[3])
+		.out(S_value[4])
 		);
 	
-
 	// 4
 	Counter_to_C_6 C6_4(
 		.in_c(counter[31:24]),
@@ -304,10 +304,9 @@ module H_last_computation(
 		);
 	S_Box Sbox4(
 		.in(idx[4]),
-		.out(S_value[4])
+		.out(S_value[3])
 		);
 	
-
 	// 5
 	Counter_to_C_6 C6_5(
 		.in_c(counter[23:16]),
@@ -315,10 +314,9 @@ module H_last_computation(
 		);
 	S_Box Sbox5(
 		.in(idx[5]),
-		.out(S_value[5])
+		.out(S_value[2])
 		);
 	
-
 	// 6
 	Counter_to_C_6 C6_6(
 		.in_c(counter[15:8]),
@@ -326,9 +324,8 @@ module H_last_computation(
 		);
 	S_Box Sbox6(
 		.in(idx[6]),
-		.out(S_value[6])
+		.out(S_value[1])
 		);
-	
 
 	// 7
 	Counter_to_C_6 C6_7(
@@ -337,32 +334,38 @@ module H_last_computation(
 		);
 	S_Box Sbox7(
 		.in(idx[7]),
-		.out(S_value[7])
+		.out(S_value[0])
 		);
 	
 
 	always @(*) begin
 		tmp[0] = H_main[1] ^ S_value[0];
 		h_out[0] = tmp[0];
+
 		tmp[1] = H_main[2] ^ S_value[1];
 		h_out[1] = tmp[1];
+
 		tmp[2] = H_main[3] ^ S_value[2];
 		h_out[2] = {tmp[2][2:0], tmp[2][3]};
+
 		tmp[3] = H_main[4] ^ S_value[3];
 		h_out[3] = {tmp[3][2:0], tmp[3][3]};
+
 		tmp[4] = H_main[5] ^ S_value[4];
 		h_out[4] = {tmp[4][1:0], tmp[4][3:2]};
+
 		tmp[5] = H_main[6] ^ S_value[5];
 		h_out[5] = {tmp[5][1:0], tmp[5][3:2]};
+
 		tmp[6] = H_main[7] ^ S_value[6];
 		h_out[6] = {tmp[6][0], tmp[6][3:1]};
+
 		tmp[7] = H_main[0] ^ S_value[7];
 		h_out[7] = {tmp[7][0], tmp[7][3:1]};
 		
-		H_last = {h_out[0], h_out[1], h_out[2], h_out[3], h_out[4], h_out[5], h_out[6], h_out[7]};
+		H_last = {h_out[7], h_out[6], h_out[5], h_out[4], h_out[3], h_out[2], h_out[1], h_out[0]};
 	end
 
-	
 endmodule
 
 
@@ -371,11 +374,6 @@ endmodule
 
 /************************************** UTILITY FUNCTIONS **************************************/
 
-
-// Compression function, it transforms an 8-bit character into a 6-bit character
-module Message_To_M_6(input [7:0] in, output [5:0] out);
-	assign out = {in[3]^in[2], in[1], in[0], in[7], in[6], in[5]^in[4]};
-endmodule
 
 
 //Final operation, it trasnforms one byte of the message length counter into a 6-bit value 
@@ -387,8 +385,8 @@ endmodule
 
 
 // This module implements a LUT version of the DES S-box
-//The first and last bits of the input select the row of the S-Box
-//The 4 central bits select the column of the S-box
+// The first and the last bits of the input select the row of the S-Box
+// The 4 central bits select the column of the S-box
 module S_Box(input [5:0] in, output reg [3:0] out);
 
   	reg [1:0] row;
@@ -445,7 +443,7 @@ module S_Box(input [5:0] in, output reg [3:0] out);
 					4'b1110: out = 4'b0101; 4'b1111: out = 4'b0011;
 				endcase
 
-			default: out = 4'bXXXX;
+			// default not necessary 
 		endcase
    	end
 endmodule

@@ -1,0 +1,190 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/modelsim
+vCounter_to_C_6
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1655997256
+!i10b 1
+!s100 d8;JZfjiYX^iehK:<G9V[0
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+I1WSd;alel4[F=H7ZIXig[2
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+Z5 w1655997252
+Z6 8C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv
+Z7 FC:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv
+!i122 9
+L0 380 5
+Z8 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z9 !s108 1655997256.000000
+Z10 !s107 C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv|
+Z11 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv|
+!i113 1
+Z12 o-work work -sv
+Z13 tCvgOpt 0
+n@counter_to_@c_6
+vfull_hash_des_box
+R1
+R2
+!i10b 1
+!s100 <EhBHFOUZlD^LXf6L7TLH1
+R3
+ImY4JUd4g4e[EWM]@_4`PL0
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 9
+L0 10 133
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+vfull_hash_des_box_testbench
+R1
+!s110 1655997257
+!i10b 1
+!s100 g5PH:@clP909^:R?hJZ2`3
+R3
+IbX=TMYHmAQIjSn3`CJNnK2
+R4
+S1
+R0
+w1655997169
+8C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.sv
+FC:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.sv
+!i122 10
+L0 5 250
+R8
+r1
+!s85 0
+31
+!s108 1655997257.000000
+!s107 C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/tb/full_hash_des_box_tb.sv|
+!i113 1
+R12
+R13
+vH_last_computation
+R1
+R2
+!i10b 1
+!s100 4?YhCb<W_G[7G;G6gn[dn1
+R3
+ICcgeQ2CNG]V@:0lm^d;O43
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 9
+L0 249 121
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+n@h_last_computation
+vH_main_computation
+R1
+R2
+!i10b 1
+!s100 z`UcOm5Z]b8@@7BQ^Zo6e2
+R3
+IW<DBf[8BcH?E9XP:HChbJ0
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 9
+L0 147 49
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+n@h_main_computation
+vHash_Round
+R1
+R2
+!i10b 1
+!s100 =9_>:Y@KYm^IGk0U?M7oS2
+R3
+IcEfa1HMO?AnzCNoY4JVR:2
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 9
+L0 201 43
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+n@hash_@round
+vS_Box
+R1
+R2
+!i10b 1
+!s100 `IMeNhW^UgEkn81HkY0RY1
+R3
+IK2:BZZAY2bm05[^[A;;]l0
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 9
+L0 390 60
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+n@s_@box
