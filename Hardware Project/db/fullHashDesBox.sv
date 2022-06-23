@@ -35,7 +35,7 @@ module full_hash_des_box(
 	reg [7:0] MSG; 			 // input character
 	reg [63:0] C_COUNT; 	 // remaining bytes
 	reg [63:0] COUNTER;		 // real byte length
-	reg [7:0]  [3:0] H_MAIN; // used for the main computation
+	reg [7:0] [3:0] H_MAIN; // used for the main computation
 	reg [7:0] [3:0] H_LAST;  // used for the last computation
 	reg [1:0] STAR;			 // status register for the FSM
 	reg flag;				 // to discriminate initialization and already started computation
@@ -90,7 +90,7 @@ module full_hash_des_box(
 					COUNTER <= counter;
 
 					// update the main register with the computed value, or initialize it
-					H_MAIN <= (flag == 1) ? half_hash : {h_0, h_1, h_2, h_3, h_4, h_5, h_6, h_7};
+					H_MAIN <= {h_0, h_1, h_2, h_3, h_4, h_5, h_6, h_7};
 
 					// in case of a new character elaboration
 					hash_ready <= (M_valid == 1) ? 0 : hash_ready;
@@ -102,13 +102,13 @@ module full_hash_des_box(
 				S1: begin 
 					
 					// result of the elaboration of the 4 rounds
-					H_MAIN <= (flag == 1) ? H_MAIN : half_hash;
-
+					H_MAIN <= half_hash;
+					
 					// count the number of elaborated bytes
 					C_COUNT <= C_COUNT - 1;
 					
 					// state transfer
-					STAR <= (C_COUNT == 1) ? S2 : (M_valid == 1) ? S1 : S0;
+					STAR <= (C_COUNT == 1) ? S2 : S1;
 
 					// remember that the message computation is started
 					flag <= 1;
@@ -151,10 +151,7 @@ module H_main_computation(
 
 	// message byte character compression
 	wire [5:0] m6;
-	Message_To_M_6 M_to_M6(
-		.in(m),
-		.out(m6)
-		);
+    assign m6 = {m[3]^m[2], m[1], m[0], m[7], m[6], m[5]^m[4]};
 
 	// DES S-Box value computation
 	wire [3:0] s_value;
@@ -209,11 +206,13 @@ module Hash_Round(
 	reg [3:0] tmp;	
 	always @(*) begin
 
-		// 0 
-		h_out[0] = h_main[1] ^ S_Box_value;
+		// 0
+		tmp = h_main[1] ^ S_Box_value;
+		h_out[0] = tmp;
 
-		// 1 
-		h_out[1] = h_main[2] ^ S_Box_value;
+		// 1
+		tmp = h_main[2] ^ S_Box_value;
+		h_out[1] = tmp;
 
 		// 2
 		tmp = h_main[3] ^ S_Box_value; 
@@ -374,11 +373,6 @@ endmodule
 
 /************************************** UTILITY FUNCTIONS **************************************/
 
-
-// Compression function, it transforms an 8-bit character into a 6-bit character
-module Message_To_M_6(input [7:0] in, output [5:0] out);
-	assign out = {in[3]^in[2], in[1], in[0], in[7], in[6], in[5]^in[4]};
-endmodule
 
 
 //Final operation, it trasnforms one byte of the message length counter into a 6-bit value 
