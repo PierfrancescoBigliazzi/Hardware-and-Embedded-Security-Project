@@ -1,0 +1,6 @@
+
+State Machine - |full_hash_des_box|STAR
+Name STAR.S0 STAR.S2 STAR.S1 
+STAR.S0 0 0 0 
+STAR.S1 1 0 1 
+STAR.S2 1 1 0 

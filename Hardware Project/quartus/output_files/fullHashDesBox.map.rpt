@@ -1,0 +1,395 @@
+Analysis & Synthesis report for fullHashDesBox
+Thu Jun 23 17:50:38 2022
+Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. State Machine - |full_hash_des_box|STAR
+  9. Registers Removed During Synthesis
+ 10. General Register Statistics
+ 11. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 12. Post-Synthesis Netlist Statistics for Top Partition
+ 13. Elapsed Time Per Partition
+ 14. Analysis & Synthesis Messages
+ 15. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2021  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+
+
+
++-------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                  ;
++---------------------------------+---------------------------------------------+
+; Analysis & Synthesis Status     ; Successful - Thu Jun 23 17:50:38 2022       ;
+; Quartus Prime Version           ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
+; Revision Name                   ; fullHashDesBox                              ;
+; Top-level Entity Name           ; full_hash_des_box                           ;
+; Family                          ; Cyclone V                                   ;
+; Logic utilization (in ALMs)     ; N/A                                         ;
+; Total registers                 ; 183                                         ;
+; Total pins                      ; 108                                         ;
+; Total virtual pins              ; 0                                           ;
+; Total block memory bits         ; 0                                           ;
+; Total DSP Blocks                ; 0                                           ;
+; Total HSSI RX PCSs              ; 0                                           ;
+; Total HSSI PMA RX Deserializers ; 0                                           ;
+; Total HSSI TX PCSs              ; 0                                           ;
+; Total HSSI PMA TX Serializers   ; 0                                           ;
+; Total PLLs                      ; 0                                           ;
+; Total DLLs                      ; 0                                           ;
++---------------------------------+---------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                             ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 5CGXFC9D6F27C7     ;                    ;
+; Top-level entity name                                                           ; full_hash_des_box  ; fullHashDesBox     ;
+; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
+; Use smart compilation                                                           ; Off                ; Off                ;
+; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                                             ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                                   ; Enable             ; Enable             ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Off                ; Off                ;
+; Extract Verilog State Machines                                                  ; On                 ; On                 ;
+; Extract VHDL State Machines                                                     ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                               ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                         ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; Parallel Synthesis                                                              ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                            ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                          ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                       ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                                  ; Off                ; Off                ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                              ; 70                 ; 70                 ;
+; Auto Carry Chains                                                               ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                             ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Report Connectivity Checks                                                      ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; Power Optimization During Synthesis                                             ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                                 ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                            ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
+; Partial Reconfiguration Bitstream ID                                            ; Off                ; Off                ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 4           ;
+; Maximum allowed            ; 2           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 2           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
++----------------------------+-------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                                                                                                                    ;
++----------------------------------+-----------------+------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                                                                                                                                ; Library ;
++----------------------------------+-----------------+------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
+; ../db/fullHashDesBox.sv          ; yes             ; User SystemVerilog HDL File  ; C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv ;         ;
++----------------------------------+-----------------+------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
+
+
++---------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary             ;
++---------------------------------------------+-----------+
+; Resource                                    ; Usage     ;
++---------------------------------------------+-----------+
+; Estimate of Logic utilization (ALMs needed) ; 136       ;
+;                                             ;           ;
+; Combinational ALUT usage for logic          ; 198       ;
+;     -- 7 input functions                    ; 0         ;
+;     -- 6 input functions                    ; 64        ;
+;     -- 5 input functions                    ; 2         ;
+;     -- 4 input functions                    ; 8         ;
+;     -- <=3 input functions                  ; 124       ;
+;                                             ;           ;
+; Dedicated logic registers                   ; 183       ;
+;                                             ;           ;
+; I/O pins                                    ; 108       ;
+;                                             ;           ;
+; Total DSP Blocks                            ; 0         ;
+;                                             ;           ;
+; Maximum fan-out node                        ; clk~input ;
+; Maximum fan-out                             ; 183       ;
+; Total fan-out                               ; 1504      ;
+; Average fan-out                             ; 2.52      ;
++---------------------------------------------+-----------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                ;
++----------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------------+--------------------+--------------+
+; Compilation Hierarchy Node       ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                ; Entity Name        ; Library Name ;
++----------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------------+--------------------+--------------+
+; |full_hash_des_box               ; 198 (106)           ; 183 (183)                 ; 0                 ; 0          ; 108  ; 0            ; |full_hash_des_box                                                 ; full_hash_des_box  ; work         ;
+;    |H_last_computation:final_op| ; 80 (32)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op                     ; H_last_computation ; work         ;
+;       |Counter_to_C_6:C6_0|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_0 ; Counter_to_C_6     ; work         ;
+;       |Counter_to_C_6:C6_1|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_1 ; Counter_to_C_6     ; work         ;
+;       |Counter_to_C_6:C6_2|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_2 ; Counter_to_C_6     ; work         ;
+;       |Counter_to_C_6:C6_3|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_3 ; Counter_to_C_6     ; work         ;
+;       |Counter_to_C_6:C6_4|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_4 ; Counter_to_C_6     ; work         ;
+;       |Counter_to_C_6:C6_5|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_5 ; Counter_to_C_6     ; work         ;
+;       |Counter_to_C_6:C6_6|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_6 ; Counter_to_C_6     ; work         ;
+;       |Counter_to_C_6:C6_7|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_7 ; Counter_to_C_6     ; work         ;
+;       |S_Box:Sbox0|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox0         ; S_Box              ; work         ;
+;       |S_Box:Sbox1|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox1         ; S_Box              ; work         ;
+;       |S_Box:Sbox2|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox2         ; S_Box              ; work         ;
+;       |S_Box:Sbox3|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox3         ; S_Box              ; work         ;
+;       |S_Box:Sbox4|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox4         ; S_Box              ; work         ;
+;       |S_Box:Sbox5|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox5         ; S_Box              ; work         ;
+;       |S_Box:Sbox6|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox6         ; S_Box              ; work         ;
+;       |S_Box:Sbox7|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox7         ; S_Box              ; work         ;
+;    |H_main_computation:main|     ; 12 (2)              ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_main_computation:main                         ; H_main_computation ; work         ;
+;       |Hash_Round:Round_4|       ; 6 (6)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_main_computation:main|Hash_Round:Round_4      ; Hash_Round         ; work         ;
+;       |S_Box:SBox|               ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_main_computation:main|S_Box:SBox              ; S_Box              ; work         ;
++----------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------------+--------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
+Encoding Type:  One-Hot
++-----------------------------------------+
+; State Machine - |full_hash_des_box|STAR ;
++---------+---------+---------+-----------+
+; Name    ; STAR.S0 ; STAR.S2 ; STAR.S1   ;
++---------+---------+---------+-----------+
+; STAR.S0 ; 0       ; 0       ; 0         ;
+; STAR.S1 ; 1       ; 0       ; 1         ;
+; STAR.S2 ; 1       ; 1       ; 0         ;
++---------+---------+---------+-----------+
+
+
++-------------------------------------------------------------------+
+; Registers Removed During Synthesis                                ;
++----------------------------------------+--------------------------+
+; Register name                          ; Reason for Removal       ;
++----------------------------------------+--------------------------+
+; H_MAIN[4][2]                           ; Merged with H_MAIN[1][0] ;
+; H_MAIN[4][3]                           ; Merged with H_MAIN[1][1] ;
+; H_MAIN[6][2]                           ; Merged with H_MAIN[1][1] ;
+; H_MAIN[7][3]                           ; Merged with H_MAIN[1][1] ;
+; H_MAIN[1][2]                           ; Merged with H_MAIN[0][2] ;
+; H_MAIN[7][0]                           ; Merged with H_MAIN[0][2] ;
+; H_MAIN[1][3]                           ; Merged with H_MAIN[0][3] ;
+; H_MAIN[3][1]                           ; Merged with H_MAIN[0][3] ;
+; H_MAIN[4][1]                           ; Merged with H_MAIN[0][3] ;
+; H_MAIN[5][3]                           ; Merged with H_MAIN[0][3] ;
+; H_MAIN[7][1]                           ; Merged with H_MAIN[0][3] ;
+; H_MAIN[2][0]                           ; Merged with H_MAIN[0][1] ;
+; H_MAIN[3][3]                           ; Merged with H_MAIN[0][1] ;
+; H_MAIN[5][1]                           ; Merged with H_MAIN[0][1] ;
+; H_MAIN[6][3]                           ; Merged with H_MAIN[2][1] ;
+; H_MAIN[6][0]                           ; Merged with H_MAIN[2][2] ;
+; H_MAIN[3][2]                           ; Merged with H_MAIN[2][3] ;
+; H_MAIN[6][1]                           ; Merged with H_MAIN[2][3] ;
+; H_MAIN[7][2]                           ; Merged with H_MAIN[2][3] ;
+; H_MAIN[4][0]                           ; Merged with H_MAIN[3][0] ;
+; H_MAIN[5][2]                           ; Merged with H_MAIN[3][0] ;
+; H_MAIN[5][0]                           ; Merged with H_MAIN[0][0] ;
+; Total Number of Removed Registers = 22 ;                          ;
++----------------------------------------+--------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 183   ;
+; Number of registers using Synchronous Clear  ; 0     ;
+; Number of registers using Synchronous Load   ; 70    ;
+; Number of registers using Asynchronous Clear ; 4     ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 179   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                      ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------------------------+
+; 4:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |full_hash_des_box|MSG[3]                                       ;
+; 4:1                ; 64 bits   ; 128 LEs       ; 0 LEs                ; 128 LEs                ; Yes        ; |full_hash_des_box|C_COUNT[2]                                   ;
+; 4:1                ; 17 bits   ; 34 LEs        ; 17 LEs               ; 17 LEs                 ; Yes        ; |full_hash_des_box|H_MAIN[2][2]                                 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox7|Mux1 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox6|Mux0 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox5|Mux1 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox4|Mux3 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox3|Mux2 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox2|Mux2 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox1|Mux3 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox0|Mux3 ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_main_computation:main|S_Box:SBox|Mux2      ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; arriav_ff             ; 183                         ;
+;     CLR               ; 4                           ;
+;     ENA               ; 109                         ;
+;     ENA SLD           ; 70                          ;
+; arriav_lcell_comb     ; 198                         ;
+;     arith             ; 64                          ;
+;         1 data inputs ; 64                          ;
+;     normal            ; 134                         ;
+;         2 data inputs ; 53                          ;
+;         3 data inputs ; 7                           ;
+;         4 data inputs ; 8                           ;
+;         5 data inputs ; 2                           ;
+;         6 data inputs ; 64                          ;
+; boundary_port         ; 108                         ;
+;                       ;                             ;
+; Max LUT depth         ; 7.30                        ;
+; Average LUT depth     ; 3.46                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:01     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
+    Info: Processing started: Thu Jun 23 17:50:05 2022
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off fullHashDesBox -c fullHashDesBox
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 2 of the 2 processors detected
+Info (12021): Found 6 design units, including 6 entities, in source file /users/francesco/documents/cybersecurity/pimo anno/secondo semestre/hardware and embedded security/repo_pier/hardware-and-embedded-security-project/hardware project/db/fullhashdesbox.sv
+    Info (12023): Found entity 1: full_hash_des_box File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 10
+    Info (12023): Found entity 2: H_main_computation File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 145
+    Info (12023): Found entity 3: Hash_Round File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 199
+    Info (12023): Found entity 4: H_last_computation File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 247
+    Info (12023): Found entity 5: Counter_to_C_6 File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 378
+    Info (12023): Found entity 6: S_Box File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 388
+Info (12127): Elaborating entity "full_hash_des_box" for the top level hierarchy
+Info (12128): Elaborating entity "H_main_computation" for hierarchy "H_main_computation:main" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 52
+Info (12128): Elaborating entity "S_Box" for hierarchy "H_main_computation:main|S_Box:SBox" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 160
+Info (12128): Elaborating entity "Hash_Round" for hierarchy "H_main_computation:main|Hash_Round:Round_1" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 168
+Info (12128): Elaborating entity "H_last_computation" for hierarchy "H_last_computation:final_op" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 60
+Info (12128): Elaborating entity "Counter_to_C_6" for hierarchy "H_last_computation:final_op|Counter_to_C_6:C6_0" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 262
+Info (286030): Timing-Driven Synthesis is running
+Info (144001): Generated suppressed messages file C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/quartus/output_files/fullHashDesBox.map.smsg
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 379 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 75 input pins
+    Info (21059): Implemented 33 output pins
+    Info (21061): Implemented 271 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 1 warning
+    Info: Peak virtual memory: 4820 megabytes
+    Info: Processing ended: Thu Jun 23 17:50:38 2022
+    Info: Elapsed time: 00:00:33
+    Info: Total CPU time (on all processors): 00:00:46
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/quartus/output_files/fullHashDesBox.map.smsg.
+
+

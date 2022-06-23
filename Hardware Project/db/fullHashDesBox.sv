@@ -39,7 +39,6 @@ module full_hash_des_box(
 	reg [7:0] [3:0] H_MAIN; // used for the main computation
 	reg [7:0] [3:0] H_LAST;  // used for the last computation
 	reg [1:0] STAR;			 // status register for the FSM
-	reg flag;				 // to discriminate initialization and already started computation
 
 	// Store partial results, between different characters of the same message
 	wire [7:0] [3:0] half_hash;	
@@ -69,7 +68,6 @@ module full_hash_des_box(
 			// initialization 
 			STAR <= S0;
 			hash_ready <= 0;
-			flag <= 0;
 
 		end else begin
 
@@ -97,7 +95,7 @@ module full_hash_des_box(
 					H_MAIN <= {h_0, h_1, h_2, h_3, h_4, h_5, h_6, h_7};
 
 					// in case of a new character elaboration
-					hash_ready <= (M_valid == 1) ? 0 : hash_ready;
+					hash_ready <= (M_valid == 1'b1) ? 1'b0 : hash_ready;
 				end
 
 				// main computation
