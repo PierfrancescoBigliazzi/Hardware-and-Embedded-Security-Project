@@ -35,6 +35,7 @@ module full_hash_des_box(
 	reg [7:0] MSG; 			 // input character
 	reg [63:0] C_COUNT; 	 // remaining bytes
 	reg [63:0] COUNTER;		 // real byte length
+	reg M_VALID_R;
 	reg [7:0] [3:0] H_MAIN; // used for the main computation
 	reg [7:0] [3:0] H_LAST;  // used for the last computation
 	reg [1:0] STAR;			 // status register for the FSM
@@ -82,6 +83,8 @@ module full_hash_des_box(
 
 					// input sampling
 					MSG <= message;
+					
+					M_VALID_R <= M_valid;
 
 					// input sampling or hold previous value
 					C_COUNT <= (flag == 1) ? C_COUNT : counter;
@@ -102,16 +105,17 @@ module full_hash_des_box(
 				S1: begin 
 					
 					// result of the elaboration of the 4 rounds
-					H_MAIN <= half_hash;
+					H_MAIN <= (M_VALID_R == 1) ? half_hash : H_MAIN;
 					
 					// count the number of elaborated bytes
-					C_COUNT <= C_COUNT - 1;
+					C_COUNT <= (M_valid == 1) ? C_COUNT - 1 : C_COUNT;
 					
+					M_VALID_R <= M_valid;
 					// state transfer
 					STAR <= (C_COUNT == 1) ? S2 : S1;
 
 					// remember that the message computation is started
-					flag <= 1;
+					flag <= (C_COUNT == 1) ? 0 : 1;
 
 					// needed for the consecutive input sampling
 					MSG <= (M_valid == 1) ? message : MSG;
@@ -126,6 +130,8 @@ module full_hash_des_box(
 
 					// signal the output
 					hash_ready <= 1;
+					
+					M_VALID_R <= M_valid;
 					
 					// unconditional state trasfer
 					STAR <= S0;
