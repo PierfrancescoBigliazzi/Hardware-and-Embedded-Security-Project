@@ -215,10 +215,38 @@ module full_hash_des_box_testbench();
 
 		end: TEST_SEQUENCE_A_CLK_B
 		
-		
+		begin: TEST_LONG_SEQUENCE
+			
+			// localparam expected_digest_long_sequence = 32'h29c0c57d;
+			
+			localparam expected_digest_long_sequence = 32'hc0872334;
+			string long_sequence = "HARDWARE_AND_EMBEDDED_SECURITY_FULL_HASH_DES_BOX_PROJECT_bigliazzi_venturini_2022";
+			int len = long_sequence.len();
 
+			$display("TEST_LONG_SEQUENCE");
 
-	
+			@ (posedge clk);
+			DUT_counter = len;
+			DUT_M_valid = 1;
+
+			for(int i=0; i < len; i++) begin
+				DUT_message = long_sequence[i];
+				$display("Char: %s", DUT_message);
+				@ (posedge clk);
+			end
+			
+			DUT_M_valid = 0;
+			@ (posedge clk);
+			@ (posedge clk);
+			@ (posedge clk);
+
+			$display("long_sequence digest: %h", DUT_digest_out);
+			$display("Test result [ %s ] ", expected_digest_long_sequence == DUT_digest_out ? "Successful" : "Failure" );
+			$display("TEST_LONG_SEQUENCE finished\n");
+			@ (posedge clk);
+
+		end: TEST_LONG_SEQUENCE
+
 		$stop;
 		
 	end
