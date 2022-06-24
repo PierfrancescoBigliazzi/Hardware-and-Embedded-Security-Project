@@ -1,14 +1,14 @@
-Fitter Status : Successful - Thu Jun 23 17:54:33 2022
+Fitter Status : Successful - Fri Jun 24 17:00:22 2022
 Quartus Prime Version : 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 Revision Name : fullHashDesBox
 Top-level Entity Name : full_hash_des_box
 Family : Cyclone V
 Device : 5CGXFC9D6F27C7
 Timing Models : Final
-Logic utilization (in ALMs) : 132 / 113,560 ( < 1 % )
-Total registers : 183
-Total pins : 108 / 378 ( 29 % )
-Total virtual pins : 0
+Logic utilization (in ALMs) : 195 / 113,560 ( < 1 % )
+Total registers : 207
+Total pins : 1 / 378 ( < 1 % )
+Total virtual pins : 107
 Total block memory bits : 0 / 12,492,800 ( 0 % )
 Total RAM Blocks : 0 / 1,220 ( 0 % )
 Total DSP Blocks : 0 / 342 ( 0 % )
