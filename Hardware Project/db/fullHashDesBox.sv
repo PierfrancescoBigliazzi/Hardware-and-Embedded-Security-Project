@@ -8,13 +8,13 @@
 
 // Main module that implements the FSM and instantiates the submodules
 module full_hash_des_box(
-	input rst_n,
-	input clk,
-	input M_valid,
-	input [7:0] message,
-	input [63:0] counter,
-	output reg [31:0] digest_out,
-	output reg hash_ready
+	input rst_n,					// active-low asynchronous reset
+	input clk,						// clock
+	input M_valid,					// input port that signals input validity
+	input [7:0] message,			// message byte intput
+	input [63:0] counter,			// real byte length of the overall message
+	output reg [31:0] digest_out,	// hash value
+	output reg hash_ready			// output port that signals output validity
 );
 
 	// nibbles initialization values for the H[i] variables 
@@ -35,8 +35,8 @@ module full_hash_des_box(
 	reg [7:0] MSG; 			 // input character
 	reg [63:0] C_COUNT; 	 // remaining bytes
 	reg [63:0] COUNTER;		 // real byte length
-	reg M_VALID_R;
-	reg [7:0] [3:0] H_MAIN; // used for the main computation
+	reg M_VALID_R;			 // to sample M_valid input
+	reg [7:0] [3:0] H_MAIN;  // used for the main computation
 	reg [7:0] [3:0] H_LAST;  // used for the last computation
 	reg [1:0] STAR;			 // status register for the FSM
 
@@ -262,7 +262,7 @@ module H_last_computation(
 		);
 	S_Box Sbox0(
 		.in(idx[0]), 
-		.out(S_value[7])
+		.out(S_value[7])	
 		);
 	
 	// 1
@@ -375,7 +375,7 @@ endmodule
 
 
 //Final operation, it trasnforms one byte of the message length counter into a 6-bit value 
-module Counter_to_C_6( input [7:0] in_c, output reg [5:0] out_c);
+module Counter_to_C_6(input [7:0] in_c, output reg [5:0] out_c);
 	always @(*) begin
 		out_c = {in_c[7] ^ in_c[1], in_c[3], in_c[2], in_c[5] ^ in_c[0], in_c[4], in_c[6]};
 	end

@@ -1,5 +1,5 @@
 Analysis & Synthesis report for fullHashDesBox
-Fri Jun 24 16:56:42 2022
+Sun Jun 26 22:20:18 2022
 Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 
 
@@ -10,16 +10,8 @@ Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
   2. Analysis & Synthesis Summary
   3. Analysis & Synthesis Settings
   4. Parallel Compilation
-  5. Analysis & Synthesis Source Files Read
-  6. Analysis & Synthesis Resource Usage Summary
-  7. Analysis & Synthesis Resource Utilization by Entity
-  8. State Machine - |full_hash_des_box|STAR
-  9. General Register Statistics
- 10. Multiplexer Restructuring Statistics (Restructuring Performed)
- 11. Post-Synthesis Netlist Statistics for Top Partition
- 12. Elapsed Time Per Partition
- 13. Analysis & Synthesis Messages
- 14. Analysis & Synthesis Suppressed Messages
+  5. Analysis & Synthesis Messages
+  6. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -43,27 +35,22 @@ https://fpgasoftware.intel.com/eula.
 
 
 
-+-------------------------------------------------------------------------------+
-; Analysis & Synthesis Summary                                                  ;
-+---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Fri Jun 24 16:56:42 2022       ;
-; Quartus Prime Version           ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
-; Revision Name                   ; fullHashDesBox                              ;
-; Top-level Entity Name           ; full_hash_des_box                           ;
-; Family                          ; Cyclone V                                   ;
-; Logic utilization (in ALMs)     ; N/A                                         ;
-; Total registers                 ; 205                                         ;
-; Total pins                      ; 1                                           ;
-; Total virtual pins              ; 107                                         ;
-; Total block memory bits         ; 0                                           ;
-; Total DSP Blocks                ; 0                                           ;
-; Total HSSI RX PCSs              ; 0                                           ;
-; Total HSSI PMA RX Deserializers ; 0                                           ;
-; Total HSSI TX PCSs              ; 0                                           ;
-; Total HSSI PMA TX Serializers   ; 0                                           ;
-; Total PLLs                      ; 0                                           ;
-; Total DLLs                      ; 0                                           ;
-+---------------------------------+---------------------------------------------+
++---------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                              ;
++-----------------------------+---------------------------------------------+
+; Analysis & Synthesis Status ; Failed - Sun Jun 26 22:20:18 2022           ;
+; Quartus Prime Version       ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
+; Revision Name               ; fullHashDesBox                              ;
+; Top-level Entity Name       ; fullHashDesBox                              ;
+; Family                      ; Cyclone V                                   ;
+; Logic utilization (in ALMs) ; N/A until Partition Merge                   ;
+; Total registers             ; N/A until Partition Merge                   ;
+; Total pins                  ; N/A until Partition Merge                   ;
+; Total virtual pins          ; N/A until Partition Merge                   ;
+; Total block memory bits     ; N/A until Partition Merge                   ;
+; Total PLLs                  ; N/A until Partition Merge                   ;
+; Total DLLs                  ; N/A until Partition Merge                   ;
++-----------------------------+---------------------------------------------+
 
 
 +---------------------------------------------------------------------------------------------------------------------------+
@@ -72,7 +59,7 @@ https://fpgasoftware.intel.com/eula.
 ; Option                                                                          ; Setting            ; Default Value      ;
 +---------------------------------------------------------------------------------+--------------------+--------------------+
 ; Device                                                                          ; 5CGXFC9D6F27C7     ;                    ;
-; Top-level entity name                                                           ; full_hash_des_box  ; fullHashDesBox     ;
+; Top-level entity name                                                           ; fullHashDesBox     ; fullHashDesBox     ;
 ; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
 ; Use smart compilation                                                           ; Off                ; Off                ;
 ; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
@@ -162,160 +149,11 @@ https://fpgasoftware.intel.com/eula.
 ; Maximum allowed            ; 2           ;
 ;                            ;             ;
 ; Average used               ; 1.00        ;
-; Maximum used               ; 2           ;
+; Maximum used               ; 1           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.0%      ;
 +----------------------------+-------------+
-
-
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                                                                                                                                                    ;
-+----------------------------------+-----------------+------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                                                                                                                                ; Library ;
-+----------------------------------+-----------------+------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
-; ../db/fullHashDesBox.sv          ; yes             ; User SystemVerilog HDL File  ; C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv ;         ;
-+----------------------------------+-----------------+------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
-
-
-+---------------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary             ;
-+---------------------------------------------+-----------+
-; Resource                                    ; Usage     ;
-+---------------------------------------------+-----------+
-; Estimate of Logic utilization (ALMs needed) ; 237       ;
-;                                             ;           ;
-; Combinational ALUT usage for logic          ; 219       ;
-;     -- 7 input functions                    ; 0         ;
-;     -- 6 input functions                    ; 75        ;
-;     -- 5 input functions                    ; 2         ;
-;     -- 4 input functions                    ; 5         ;
-;     -- <=3 input functions                  ; 137       ;
-;                                             ;           ;
-; Dedicated logic registers                   ; 205       ;
-;                                             ;           ;
-; Virtual pins                                ; 107       ;
-; I/O pins                                    ; 1         ;
-;                                             ;           ;
-; Total DSP Blocks                            ; 0         ;
-;                                             ;           ;
-; Maximum fan-out node                        ; clk~input ;
-; Maximum fan-out                             ; 205       ;
-; Total fan-out                               ; 1566      ;
-; Average fan-out                             ; 2.94      ;
-+---------------------------------------------+-----------+
-
-
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                ;
-+----------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------------+--------------------+--------------+
-; Compilation Hierarchy Node       ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                ; Entity Name        ; Library Name ;
-+----------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------------+--------------------+--------------+
-; |full_hash_des_box               ; 219 (116)           ; 205 (205)                 ; 0                 ; 0          ; 1    ; 107          ; |full_hash_des_box                                                 ; full_hash_des_box  ; work         ;
-;    |H_last_computation:final_op| ; 80 (32)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op                     ; H_last_computation ; work         ;
-;       |Counter_to_C_6:C6_0|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_0 ; Counter_to_C_6     ; work         ;
-;       |Counter_to_C_6:C6_1|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_1 ; Counter_to_C_6     ; work         ;
-;       |Counter_to_C_6:C6_2|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_2 ; Counter_to_C_6     ; work         ;
-;       |Counter_to_C_6:C6_3|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_3 ; Counter_to_C_6     ; work         ;
-;       |Counter_to_C_6:C6_4|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_4 ; Counter_to_C_6     ; work         ;
-;       |Counter_to_C_6:C6_5|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_5 ; Counter_to_C_6     ; work         ;
-;       |Counter_to_C_6:C6_6|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_6 ; Counter_to_C_6     ; work         ;
-;       |Counter_to_C_6:C6_7|      ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|Counter_to_C_6:C6_7 ; Counter_to_C_6     ; work         ;
-;       |S_Box:Sbox0|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox0         ; S_Box              ; work         ;
-;       |S_Box:Sbox1|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox1         ; S_Box              ; work         ;
-;       |S_Box:Sbox2|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox2         ; S_Box              ; work         ;
-;       |S_Box:Sbox3|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox3         ; S_Box              ; work         ;
-;       |S_Box:Sbox4|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox4         ; S_Box              ; work         ;
-;       |S_Box:Sbox5|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox5         ; S_Box              ; work         ;
-;       |S_Box:Sbox6|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox6         ; S_Box              ; work         ;
-;       |S_Box:Sbox7|              ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox7         ; S_Box              ; work         ;
-;    |H_main_computation:main|     ; 23 (2)              ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_main_computation:main                         ; H_main_computation ; work         ;
-;       |Hash_Round:Round_4|       ; 17 (17)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_main_computation:main|Hash_Round:Round_4      ; Hash_Round         ; work         ;
-;       |S_Box:SBox|               ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |full_hash_des_box|H_main_computation:main|S_Box:SBox              ; S_Box              ; work         ;
-+----------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------------+--------------------+--------------+
-Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
-
-
-Encoding Type:  One-Hot
-+-----------------------------------------+
-; State Machine - |full_hash_des_box|STAR ;
-+---------+---------+---------+-----------+
-; Name    ; STAR.S0 ; STAR.S2 ; STAR.S1   ;
-+---------+---------+---------+-----------+
-; STAR.S0 ; 0       ; 0       ; 0         ;
-; STAR.S1 ; 1       ; 0       ; 1         ;
-; STAR.S2 ; 1       ; 1       ; 0         ;
-+---------+---------+---------+-----------+
-
-
-+------------------------------------------------------+
-; General Register Statistics                          ;
-+----------------------------------------------+-------+
-; Statistic                                    ; Value ;
-+----------------------------------------------+-------+
-; Total registers                              ; 205   ;
-; Number of registers using Synchronous Clear  ; 0     ;
-; Number of registers using Synchronous Load   ; 81    ;
-; Number of registers using Asynchronous Clear ; 4     ;
-; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 201   ;
-; Number of registers using Preset             ; 0     ;
-+----------------------------------------------+-------+
-
-
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                      ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------------------------+
-; 4:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |full_hash_des_box|MSG[3]                                       ;
-; 4:1                ; 64 bits   ; 128 LEs       ; 0 LEs                ; 128 LEs                ; Yes        ; |full_hash_des_box|C_COUNT[2]                                   ;
-; 4:1                ; 17 bits   ; 34 LEs        ; 17 LEs               ; 17 LEs                 ; Yes        ; |full_hash_des_box|H_MAIN[2][2]                                 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox7|Mux1 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox6|Mux0 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox5|Mux1 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox4|Mux3 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox3|Mux2 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox2|Mux2 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox1|Mux3 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_last_computation:final_op|S_Box:Sbox0|Mux3 ;
-; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |full_hash_des_box|H_main_computation:main|S_Box:SBox|Mux2      ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------------------------+
-
-
-+-----------------------------------------------------+
-; Post-Synthesis Netlist Statistics for Top Partition ;
-+-----------------------+-----------------------------+
-; Type                  ; Count                       ;
-+-----------------------+-----------------------------+
-; arriav_ff             ; 205                         ;
-;     CLR               ; 4                           ;
-;     ENA               ; 120                         ;
-;     ENA SLD           ; 81                          ;
-; arriav_lcell_comb     ; 219                         ;
-;     arith             ; 64                          ;
-;         1 data inputs ; 64                          ;
-;     normal            ; 155                         ;
-;         2 data inputs ; 54                          ;
-;         3 data inputs ; 19                          ;
-;         4 data inputs ; 5                           ;
-;         5 data inputs ; 2                           ;
-;         6 data inputs ; 75                          ;
-; boundary_port         ; 108                         ;
-;                       ;                             ;
-; Max LUT depth         ; 7.30                        ;
-; Average LUT depth     ; 3.34                        ;
-+-----------------------+-----------------------------+
-
-
-+-------------------------------+
-; Elapsed Time Per Partition    ;
-+----------------+--------------+
-; Partition Name ; Elapsed Time ;
-+----------------+--------------+
-; Top            ; 00:00:01     ;
-+----------------+--------------+
 
 
 +-------------------------------+
@@ -324,7 +162,7 @@ Encoding Type:  One-Hot
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
-    Info: Processing started: Fri Jun 24 16:56:02 2022
+    Info: Processing started: Sun Jun 26 22:19:59 2022
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off fullHashDesBox -c fullHashDesBox
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 2 of the 2 processors detected
@@ -334,134 +172,14 @@ Info (12021): Found 6 design units, including 6 entities, in source file /users/
     Info (12023): Found entity 3: Hash_Round File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 199
     Info (12023): Found entity 4: H_last_computation File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 247
     Info (12023): Found entity 5: Counter_to_C_6 File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 378
-    Info (12023): Found entity 6: S_Box File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 388
-Info (12127): Elaborating entity "full_hash_des_box" for the top level hierarchy
-Info (12128): Elaborating entity "H_main_computation" for hierarchy "H_main_computation:main" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 52
-Info (12128): Elaborating entity "S_Box" for hierarchy "H_main_computation:main|S_Box:SBox" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 160
-Info (12128): Elaborating entity "Hash_Round" for hierarchy "H_main_computation:main|Hash_Round:Round_1" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 168
-Info (12128): Elaborating entity "H_last_computation" for hierarchy "H_last_computation:final_op" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 60
-Info (12128): Elaborating entity "Counter_to_C_6" for hierarchy "H_last_computation:final_op|Counter_to_C_6:C6_0" File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 262
-Info (286030): Timing-Driven Synthesis is running
+    Info (12023): Found entity 6: Sbox File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 451
+Error (12007): Top-level design entity "fullHashDesBox" is undefined
 Info (144001): Generated suppressed messages file C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/quartus/output_files/fullHashDesBox.map.smsg
-Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
-    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (15717): Design contains 107 virtual pins; timing numbers associated with paths containing virtual pins are estimates
-    Info (15719): Pin "digest_out[0]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[1]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[2]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[3]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[4]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[5]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[6]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[7]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[8]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[9]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[10]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[11]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[12]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[13]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[14]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[15]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[16]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[17]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[18]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[19]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[20]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[21]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[22]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[23]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[24]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[25]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[26]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[27]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[28]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[29]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[30]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "digest_out[31]" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 74
-    Info (15719): Pin "hash_ready" is virtual output pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 18
-    Info (15718): Pin "rst_n" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 11
-    Info (15718): Pin "M_valid" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 13
-    Info (15718): Pin "counter[3]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[2]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[5]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[0]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[4]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[7]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[1]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[6]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[30]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[31]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[32]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[33]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[34]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[35]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[24]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[25]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[26]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[27]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[28]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[29]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[18]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[19]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[20]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[21]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[22]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[23]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[12]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[13]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[14]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[15]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[16]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[17]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[8]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[9]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[10]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[11]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[47]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[60]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[61]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[62]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[63]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[54]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[55]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[56]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[57]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[58]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[59]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[48]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[49]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[50]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[51]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[52]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[53]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[36]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[37]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[38]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[39]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[40]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[41]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[42]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[43]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[44]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[45]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "counter[46]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 15
-    Info (15718): Pin "message[1]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 14
-    Info (15718): Pin "message[0]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 14
-    Info (15718): Pin "message[7]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 14
-    Info (15718): Pin "message[6]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 14
-    Info (15718): Pin "message[3]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 14
-    Info (15718): Pin "message[2]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 14
-    Info (15718): Pin "message[5]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 14
-    Info (15718): Pin "message[4]" is virtual input pin File: C:/Users/Francesco/Documents/Cybersecurity/Pimo Anno/Secondo Semestre/Hardware and Embedded Security/repo_pier/Hardware-and-Embedded-Security-Project/Hardware Project/db/fullHashDesBox.sv Line: 14
-Info (21057): Implemented 392 device resources after synthesis - the final resource count might be different
-    Info (21058): Implemented 1 input pins
-    Info (21059): Implemented 0 output pins
-    Info (21061): Implemented 391 logic cells
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4836 megabytes
-    Info: Processing ended: Fri Jun 24 16:56:42 2022
-    Info: Elapsed time: 00:00:40
-    Info: Total CPU time (on all processors): 00:00:51
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 1 error, 1 warning
+    Error: Peak virtual memory: 4777 megabytes
+    Error: Processing ended: Sun Jun 26 22:20:18 2022
+    Error: Elapsed time: 00:00:19
+    Error: Total CPU time (on all processors): 00:00:29
 
 
 +------------------------------------------+
