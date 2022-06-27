@@ -34,7 +34,7 @@ module full_hash_des_box_testbench();
 	
 	initial begin
 		
-		begin: TEST_ZERO_LENGTH
+		/*begin: TEST_ZERO_LENGTH
 			
 			localparam expected_digest_empty = 32'h83656fd2;
 
@@ -211,7 +211,7 @@ module full_hash_des_box_testbench();
 			$display("TEST_SEQUENCE_A_CLK_B finished\n");
 			@ (posedge clk);
 
-		end: TEST_SEQUENCE_A_CLK_B
+		end: TEST_SEQUENCE_A_CLK_B*/
 
 		
 		begin: TEST_LONG_SEQUENCE
