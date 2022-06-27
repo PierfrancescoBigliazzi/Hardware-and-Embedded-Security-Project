@@ -35,10 +35,10 @@ module full_hash_des_box(
 	reg [7:0] MSG; 			 // input character
 	reg [63:0] C_COUNT; 	 // remaining bytes
 	reg [63:0] COUNTER;		 // real byte length
-	reg M_VALID_R;
-	reg [7:0] [3:0] H_MAIN; // used for the main computation
+	reg [7:0] [3:0] H_MAIN;  // used for the main computation
 	reg [7:0] [3:0] H_LAST;  // used for the last computation
 	reg [1:0] STAR;			 // status register for the FSM
+	reg M_VALID_R;			 // sample the value of M_valid
 
 	// Store partial results, between different characters of the same message
 	wire [7:0] [3:0] half_hash;	

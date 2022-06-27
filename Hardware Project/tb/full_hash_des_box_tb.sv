@@ -1,5 +1,6 @@
-// This file contains the testbenches for the full_hash_des_box
+// This file contains the testbenches for the full_hash_des_box module
 // The timescale values are the default ones
+// Expected outputs have been computed with the python script available on GitHub
 
 
 module full_hash_des_box_testbench();
@@ -64,7 +65,6 @@ module full_hash_des_box_testbench();
 			
 			localparam expected_digest_A = 32'hc087233c;
 
-
 			$display("TEST_CHAR_A");
 			@ (posedge clk);
 			DUT_message = "A";
@@ -86,7 +86,7 @@ module full_hash_des_box_testbench();
 
 		
 		begin: TEST_SEQUENCE_AB
-			// expected output
+			
 			localparam expected_digest_AB = 32'h83656fd4;
 
 			$display("TEST_SEQUENCE_AB");
@@ -123,7 +123,7 @@ module full_hash_des_box_testbench();
 		begin: TEST_SAME_MESSAGE_SAME_HASH
 		
 			reg[31:0] first_Hash;
-			// expected output
+			
 			localparam expected_digest_AB = 32'h83656fd4;
 
 			$display("TEST_SAME_MESSAGE_SAME_HASH");
